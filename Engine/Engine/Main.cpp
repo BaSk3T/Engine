@@ -1,22 +1,10 @@
-#include <iostream>
+#include "System.h"
 
-#include "TaskScheduler\TaskScheduler.h"
-#include "TestingTask.h"
-
-int main()
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	TaskScheduler& ts = TaskScheduler::GetInstance();
-	ts.AddThreads(8);
-	ts.SetTasksPerThread(5);
-	
-	for (UI32 i = 0; i < 100; i++)
-	{
-		ts.AddTask(new TestingTask((char)i));
-	}
+	System system;
+	system.InitializeWindow(hInstance, nCmdShow);
+	UI32 message = system.Run();
 
-	ts.WakeWorkerThreads();
-	ts.WaitForWorkerThreadsToFinish();
-	ts.SyncWorkerThreads();
-
-	return 0;
+	return message;
 }

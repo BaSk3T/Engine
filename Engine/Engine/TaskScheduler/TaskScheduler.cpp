@@ -23,6 +23,11 @@ void TaskScheduler::AddThreads(UI32 numberOfThreads)
 	}
 }
 
+void TaskScheduler::SetTasksPerThread(UI32 tasksPerThread)
+{
+	m_TasksPerThread = tasksPerThread;
+}
+
 bool TaskScheduler::AssignPendingTasks(LockFreeStack<Task*>& tasks)
 {
 	if (m_Tasks.IsEmpty())
@@ -95,6 +100,11 @@ void TaskScheduler::WaitForWorkerThreadsToFinish()
 			return;
 		}
 	}
+}
+
+void TaskScheduler::AddTask(Task* task)
+{
+	m_Tasks.Push(task);
 }
 
 void TaskScheduler::DeleteThreads()

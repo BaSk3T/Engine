@@ -18,11 +18,11 @@ public:
 	void WakeWorkerThreads();
 	void SyncWorkerThreads();
 	void WaitForWorkerThreadsToFinish();
-	void AddTask(Task* task) { m_Tasks.Push(task); };
+	void AddTask(Task* task);
 
 	void AddThreads(UI32 numberOfThreads);
 
-	void SetTasksPerThread(UI32 tasksPerThread) { m_TasksPerThread = tasksPerThread; };
+	void SetTasksPerThread(UI32 tasksPerThread);
 
 	// Assigns task to thread
 	// if successful returns true otherwise returns false
