@@ -17,6 +17,7 @@ public:
 	bool HasTasks();
 	void WakeWorkerThreads();
 	void SyncWorkerThreads();
+	void WaitForWorkerThreadsToFinish();
 	void AddTask(Task* task) { m_Tasks.Push(task); };
 
 	void AddThreads(UI32 numberOfThreads);

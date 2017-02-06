@@ -15,6 +15,7 @@ int main()
 	}
 
 	ts.WakeWorkerThreads();
+	ts.WaitForWorkerThreadsToFinish();
 	ts.SyncWorkerThreads();
 
 	return 0;

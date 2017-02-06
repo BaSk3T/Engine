@@ -16,6 +16,7 @@ public:
 	
 	void Wake();
 	void Sync();
+	bool IsAwake() const;
 
 private:
 	void Entry();
@@ -26,6 +27,7 @@ private:
 
 	LockFreeStack<Task*> m_AssignedTasks;
 	bool m_Quit;
+	bool m_IsAwake;
 };
 
 #endif // !TASKTHREAD_H

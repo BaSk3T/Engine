@@ -4,14 +4,14 @@
 #include "TaskScheduler.h"
 
 TaskThread::TaskThread()
-	: m_Quit(false)
+	: m_Quit(false),
+	m_IsAwake(false)
 {
 	m_Thread = std::thread(&TaskThread::Entry, this);
 }
 
 TaskThread::~TaskThread()
 {
-	// to be removed later
 	m_Thread.join();
 }
 
@@ -26,7 +26,9 @@ void TaskThread::Entry()
 		m_ConditionVariable.wait(lock, [this]()
 		{
 			TaskScheduler& ts = TaskScheduler::GetInstance();
-			return ts.HasTasks() || m_Quit;
+			m_IsAwake = ts.HasTasks() || m_Quit;
+
+			return m_IsAwake;
 		});
 
 		while (ts.AssignPendingTasks(m_AssignedTasks))
@@ -40,12 +42,15 @@ void TaskThread::Entry()
 			}
 		}
 
+		m_IsAwake = false;
+
 		lock.unlock();
 	}
 }
 
 void TaskThread::Wake()
 {
+	m_IsAwake = true;
 	m_ConditionVariable.notify_one();
 }
 
@@ -53,4 +58,9 @@ void TaskThread::Sync()
 {
 	m_Quit = true;
 	Wake();
+}
+
+bool TaskThread::IsAwake() const
+{
+	return m_IsAwake;
 }

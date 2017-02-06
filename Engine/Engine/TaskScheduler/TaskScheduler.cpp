@@ -58,7 +58,7 @@ bool TaskScheduler::HasTasks()
 
 void TaskScheduler::WakeWorkerThreads()
 {
-	for each (auto th in m_Threads)
+	for (auto th : m_Threads)
 	{
 		th->Wake();
 	}
@@ -66,15 +66,40 @@ void TaskScheduler::WakeWorkerThreads()
 
 void TaskScheduler::SyncWorkerThreads()
 {
-	for each (auto th in m_Threads)
+	for (auto th : m_Threads)
 	{
 		th->Sync();
 	}
 }
 
+void TaskScheduler::WaitForWorkerThreadsToFinish()
+{
+	while (true)
+	{
+		bool threadsAreAwake = false;
+
+		for (auto th : m_Threads)
+		{
+			// if thread is awake threadsAreAwake = true;
+			if (th->IsAwake())
+			{
+				threadsAreAwake = true;
+			}
+		}
+
+		std::this_thread::yield();
+
+		// if !threadsAreAwake -> no thread is awake thus return
+		if (!threadsAreAwake)
+		{
+			return;
+		}
+	}
+}
+
 void TaskScheduler::DeleteThreads()
 {
-	for each (auto th in m_Threads)
+	for (auto th : m_Threads)
 	{
 		delete th;
 	}
