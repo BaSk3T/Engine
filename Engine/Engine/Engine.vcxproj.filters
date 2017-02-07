@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Tasks">
       <UniqueIdentifier>{da941ae2-6dbf-441a-875a-3864c2ccdc95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{cbdf07c6-ff91-49c3-89bd-ae454f625d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{fc1702e4-44d1-4fd2-8621-1fb2dc2776f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -50,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Device.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +81,12 @@
       <Filter>Header Files\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Device.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

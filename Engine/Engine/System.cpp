@@ -1,12 +1,14 @@
 #include "System.h"
 
+#include "DebugHelper.h"
+
 #include "TaskScheduler\TaskScheduler.h"
 
 System::System()
 {
 	TaskScheduler& ts = TaskScheduler::GetInstance();
 	ts.AddThreads(8);
-	ts.SetTasksPerThread(1);
+	ts.SetTasksPerThread(5);
 }
 
 System::~System()
@@ -31,8 +33,11 @@ UI32 System::Run()
 	return msg.message;
 }
 
-void System::InitializeWindow(HINSTANCE hInstance, int nCmdShow)
+void System::InitializeWindow(UI32 width, UI32 height, HINSTANCE hInstance, int nCmdShow)
 {
+	m_WindowWidth = width;
+	m_WindowHeight = height;
+
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
@@ -46,11 +51,11 @@ void System::InitializeWindow(HINSTANCE hInstance, int nCmdShow)
 
 	RegisterClassEx(&wc);
 
-	m_hWnd = CreateWindowEx(NULL, wc.lpszClassName, "Engine", WS_OVERLAPPEDWINDOW, 0, 0, 600, 400, NULL, NULL, hInstance, NULL);
+	m_hWnd = CreateWindowEx(NULL, wc.lpszClassName, "Engine", WS_OVERLAPPEDWINDOW, 0, 0, width, height, NULL, NULL, hInstance, NULL);
 
 	if (!m_hWnd)
 	{
-		OutputDebugStringA("Couldn't initialize window!/n");
+		OUTPUT_DEBUG("Couldn't initialize window!/n");
 	}
 
 	ShowWindow(m_hWnd, nCmdShow);
