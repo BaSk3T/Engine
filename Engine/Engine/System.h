@@ -3,6 +3,10 @@
 
 #include <Windows.h>
 
+class Renderer;
+
+#include <vector>
+
 #include "Types.h"
 
 class System
@@ -19,6 +23,8 @@ private:
 
 	UI32 m_WindowWidth;
 	UI32 m_WindowHeight;
+
+	std::vector<Renderer*> m_Renderers;
 };
 
 static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

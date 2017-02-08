@@ -37,6 +37,15 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{fc1702e4-44d1-4fd2-8621-1fb2dc2776f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Interfaces">
+      <UniqueIdentifier>{86864822-ca19-4992-a31d-e194f179ab53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Renderers">
+      <UniqueIdentifier>{5137e2f2-7a07-46ec-8028-750bcf1398ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Renderers">
+      <UniqueIdentifier>{6c82a6c1-8fed-4e7b-bda1-19cc364fdd8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -59,6 +68,21 @@
     </ClCompile>
     <ClCompile Include="Graphics\Device.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DeviceContext.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\RenderTarget.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Texture.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Renderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Renderers\CharacterRenderer.cpp">
+      <Filter>Source Files\Graphics\Renderers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +112,33 @@
     </ClInclude>
     <ClInclude Include="DebugHelper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DeviceContext.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\RenderTarget.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Texture.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Interfaces\IDevice.h">
+      <Filter>Header Files\Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Interfaces\IDeviceContext.h">
+      <Filter>Header Files\Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Interfaces\IRenderTarget.h">
+      <Filter>Header Files\Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Interfaces\ITexture.h">
+      <Filter>Header Files\Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Renderer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Renderers\CharacterRenderer.h">
+      <Filter>Header Files\Graphics\Renderers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

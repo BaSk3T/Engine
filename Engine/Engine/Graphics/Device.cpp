@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 
+#include "DeviceContext.h"
+#include "RenderTarget.h"
 #include "../DebugHelper.h"
 
 Device::Device(HWND hwnd, UI32 width, UI32 height)
@@ -25,6 +27,8 @@ Device::Device(HWND hwnd, UI32 width, UI32 height)
 	D3D_FEATURE_LEVEL featureLevelsSupported;
 	D3D_FEATURE_LEVEL featureLevels = D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_11_1;
 
+	ID3D11DeviceContext* deviceContext;
+
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
@@ -36,17 +40,25 @@ Device::Device(HWND hwnd, UI32 width, UI32 height)
 		&m_Swapchain,
 		&m_Device,
 		&featureLevelsSupported,
-		&m_DeviceContext);
+		&deviceContext);
 
 	if (FAILED(hr))
 	{
 		OUTPUT_DEBUG("Failed to initialize device!\n");
 	}
+
+	m_ImmediateContext = new DeviceContext(deviceContext);
+
+	ID3D11Texture2D* backBuffer;
+	m_Swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
+
+	m_MainRenderTarget = new RenderTarget(*this, backBuffer);
 }
 
 Device::~Device()
 {
+	delete m_MainRenderTarget;
+	delete m_ImmediateContext;
 	m_Swapchain->Release();
-	m_DeviceContext->Release();
 	m_Device->Release();
 }

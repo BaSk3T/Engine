@@ -2,6 +2,7 @@
 
 #include "DebugHelper.h"
 
+#include "Graphics\Renderer.h"
 #include "TaskScheduler\TaskScheduler.h"
 
 System::System()
@@ -27,6 +28,11 @@ UI32 System::Run()
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+		}
+
+		for (auto renderer : m_Renderers)
+		{
+			renderer->RenderFrame();
 		}
 	}
 
