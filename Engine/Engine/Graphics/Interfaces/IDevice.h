@@ -10,8 +10,8 @@ public:
 	IDevice() {};
 	virtual ~IDevice() {};
 
-	IDeviceContext* GetImmediateContext() { return m_ImmediateContext; };
-	IRenderTarget* GetMainRenderTarget() { return m_MainRenderTarget; };
+	IDeviceContext* GetImmediateContext() const { return m_ImmediateContext; };
+	IRenderTarget* GetMainRenderTarget() const { return m_MainRenderTarget; };
 
 protected:
 	IDeviceContext* m_ImmediateContext;

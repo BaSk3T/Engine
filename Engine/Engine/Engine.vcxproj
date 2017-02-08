@@ -120,9 +120,11 @@
   <ItemGroup>
     <ClCompile Include="Graphics\Device.cpp" />
     <ClCompile Include="Graphics\DeviceContext.cpp" />
+    <ClCompile Include="Graphics\InputLayout.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
     <ClCompile Include="Graphics\Renderers\CharacterRenderer.cpp" />
     <ClCompile Include="Graphics\RenderTarget.cpp" />
+    <ClCompile Include="Graphics\Shader.cpp" />
     <ClCompile Include="Graphics\Texture.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="System.cpp" />
@@ -135,6 +137,9 @@
     <ClInclude Include="DebugHelper.h" />
     <ClInclude Include="Graphics\Device.h" />
     <ClInclude Include="Graphics\DeviceContext.h" />
+    <ClInclude Include="Graphics\FormatConverter.h" />
+    <ClInclude Include="Graphics\Formats.h" />
+    <ClInclude Include="Graphics\InputLayout.h" />
     <ClInclude Include="Graphics\Interfaces\IDevice.h" />
     <ClInclude Include="Graphics\Interfaces\IDeviceContext.h" />
     <ClInclude Include="Graphics\Interfaces\IRenderTarget.h" />
@@ -142,6 +147,7 @@
     <ClInclude Include="Graphics\Renderer.h" />
     <ClInclude Include="Graphics\Renderers\CharacterRenderer.h" />
     <ClInclude Include="Graphics\RenderTarget.h" />
+    <ClInclude Include="Graphics\Shader.h" />
     <ClInclude Include="Graphics\Texture.h" />
     <ClInclude Include="LockFreeDataStructures\LockFreeStack.h" />
     <ClInclude Include="System.h" />

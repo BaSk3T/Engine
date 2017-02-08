@@ -13,7 +13,7 @@ public:
 	RenderTarget(IDevice& device, ID3D11Texture2D* tex);
 	~RenderTarget();
 
-	ID3D11RenderTargetView* GetPointer() { return m_RenderTarget; };
+	ID3D11RenderTargetView* GetPointer() const { return m_RenderTarget; };
 private:
 	ID3D11RenderTargetView* m_RenderTarget;
 };
