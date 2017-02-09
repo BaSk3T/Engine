@@ -19,3 +19,20 @@ DXGI_FORMAT ConvertResourceDataFormat(RESOURCE_DATA_FORMAT type)
 
 	return s_ResourceDataFormats[type];
 }
+
+D3D_PRIMITIVE_TOPOLOGY ConvertPrimitive(PRIMITIVE_TOPOLOGY_TYPE type)
+{
+	static D3D_PRIMITIVE_TOPOLOGY s_PrimitveTopologyTypes[]
+	{
+		D3D_PRIMITIVE_TOPOLOGY_POINTLIST,
+		D3D_PRIMITIVE_TOPOLOGY_LINELIST,
+		D3D_PRIMITIVE_TOPOLOGY_LINESTRIP,
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST,
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
+	};
+
+	// make sure number of elements in s_PrimitveTopologyTypes is equal to count in PRIMITIVE_TOPOLOGY_TYPE
+	assert(sizeof(s_PrimitveTopologyTypes) / sizeof(s_PrimitveTopologyTypes[0]) == PRIMITIVE_TOPOLOGY_TYPE_COUNT);
+
+	return s_PrimitveTopologyTypes[type];
+}

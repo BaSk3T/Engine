@@ -6,7 +6,9 @@
 #include "InputLayout.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "ConstantBuffer.h"
 #include "FormatConverter.h"
+#include "Shader.h"
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext)
 	: m_DeviceContext(deviceContext)
@@ -50,7 +52,9 @@ void DeviceContext::SetVertexBuffer(IBuffer& vertexBuffer, UI32 vertexSize)
 {
 	ID3D11Buffer* buffer = static_cast<VertexBuffer&>(vertexBuffer).GetPointer();
 
-	m_DeviceContext->IASetVertexBuffers(0, 1, &buffer, &vertexSize, 0);
+	UI32 offset = 0;
+
+	m_DeviceContext->IASetVertexBuffers(0, 1, &buffer, &vertexSize, &offset);
 }
 
 void DeviceContext::SetIndexBuffer(IBuffer& indexBuffer)
@@ -61,4 +65,48 @@ void DeviceContext::SetIndexBuffer(IBuffer& indexBuffer)
 	ID3D11Buffer* buffer = indexBuff.GetPointer();
 
 	m_DeviceContext->IASetIndexBuffer(buffer, ConvertResourceDataFormat(dataFormat), 0);
+}
+
+void DeviceContext::SetConstantBuffer(IBuffer& constantBuffer)
+{
+	ID3D11Buffer* buffer = static_cast<ConstantBuffer&>(constantBuffer).GetPointer();
+
+	m_DeviceContext->VSSetConstantBuffers(0, 1, &buffer);
+}
+
+void DeviceContext::SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE type)
+{
+	m_DeviceContext->IASetPrimitiveTopology(ConvertPrimitive(type));
+}
+
+void DeviceContext::ClearRenderTarget(IRenderTarget& renderTarget, ColorRGBA color)
+{
+	RenderTarget& rendTarget = static_cast<RenderTarget&>(renderTarget);
+	ID3D11RenderTargetView* renderTargetView = rendTarget.GetPointer();
+
+	m_DeviceContext->ClearRenderTargetView(renderTargetView, color.rgba);
+}
+
+void DeviceContext::Draw(UI32 vertexCount, UI32 startVertexLocation)
+{
+	m_DeviceContext->Draw(vertexCount, startVertexLocation);
+}
+
+void DeviceContext::DrawIndexed(UI32 indexCount, UI32 startIndexLocation, int baseVertexLocation)
+{
+	m_DeviceContext->DrawIndexed(indexCount, startIndexLocation, baseVertexLocation);
+}
+
+void DeviceContext::SetVertexShader(IShader& shader)
+{
+	Shader<VertexShader>& vertexShader = static_cast<Shader<VertexShader>&>(shader);
+
+	m_DeviceContext->VSSetShader(vertexShader.GetShader().m_Pointer, NULL, 0);
+}
+
+void DeviceContext::SetPixelShader(IShader& shader)
+{
+	Shader<PixelShader>& pixelShader = static_cast<Shader<PixelShader>&>(shader);
+
+	m_DeviceContext->PSSetShader(pixelShader.GetShader().m_Pointer, NULL, 0);
 }

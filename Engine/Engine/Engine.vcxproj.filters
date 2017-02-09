@@ -46,6 +46,9 @@
     <Filter Include="Source Files\Graphics\Renderers">
       <UniqueIdentifier>{6c82a6c1-8fed-4e7b-bda1-19cc364fdd8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Shaders">
+      <UniqueIdentifier>{9385d281-b2e2-491b-a0c8-ca4e501eea1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -97,6 +100,9 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\FormatConverter.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ConstantBuffer.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,10 +185,24 @@
     <ClInclude Include="Graphics\IndexBuffer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\ConstantBuffer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Interfaces\IShader.h">
+      <Filter>Header Files\Graphics\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="LockFreeDataStructures\LockFreeStack.inl">
       <Filter>Source Files\LockFreeDataStructures</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Graphics\Shaders\PhongVertexShader.hlsl">
+      <Filter>Header Files\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Graphics\Shaders\PhongPixelShader.hlsl">
+      <Filter>Header Files\Graphics\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

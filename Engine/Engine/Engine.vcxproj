@@ -103,6 +103,11 @@
       <SubSystem>
       </SubSystem>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ShaderType>
+      </ShaderType>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -118,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Graphics\Device.cpp" />
     <ClCompile Include="Graphics\DeviceContext.cpp" />
     <ClCompile Include="Graphics\FormatConverter.cpp" />
@@ -138,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelper.h" />
+    <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\Device.h" />
     <ClInclude Include="Graphics\DeviceContext.h" />
     <ClInclude Include="Graphics\FormatConverter.h" />
@@ -149,6 +156,7 @@
     <ClInclude Include="Graphics\Interfaces\IDeviceContext.h" />
     <ClInclude Include="Graphics\Interfaces\IInputLayout.h" />
     <ClInclude Include="Graphics\Interfaces\IRenderTarget.h" />
+    <ClInclude Include="Graphics\Interfaces\IShader.h" />
     <ClInclude Include="Graphics\Interfaces\ITexture.h" />
     <ClInclude Include="Graphics\Renderer.h" />
     <ClInclude Include="Graphics\Renderers\CharacterRenderer.h" />
@@ -166,6 +174,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="LockFreeDataStructures\LockFreeStack.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Graphics\Shaders\PhongPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Graphics\Shaders\PhongVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

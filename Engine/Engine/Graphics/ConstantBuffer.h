@@ -1,5 +1,5 @@
-#ifndef VERTEXBUFFER_H
-#define VERTEXBUFFER_H
+#ifndef CONSTANTBUFFER_H
+#define CONSTANTBUFFER_H
 
 class IDevice;
 struct ID3D11Buffer;
@@ -7,11 +7,11 @@ struct ID3D11Buffer;
 #include "Interfaces/IBuffer.h"
 #include "../Types.h"
 
-class VertexBuffer : public IBuffer
+class ConstantBuffer : public IBuffer
 {
 public:
-	VertexBuffer(IDevice& device, UI32 vertexCount, UI32 vertexSize, void* data);
-	~VertexBuffer();
+	ConstantBuffer(IDevice& device, UI32 bufferSize, void* data);
+	~ConstantBuffer();
 
 	ID3D11Buffer* GetPointer() const { return m_Buffer; };
 
@@ -19,4 +19,4 @@ private:
 	ID3D11Buffer* m_Buffer;
 };
 
-#endif // !VERTEXBUFFER_H
+#endif // !CONSTANTBUFFER_H

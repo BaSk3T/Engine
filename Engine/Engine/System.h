@@ -1,11 +1,11 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include <Windows.h>
-
 class Renderer;
+class IDevice;
 
 #include <vector>
+#include <Windows.h>
 
 #include "Types.h"
 
@@ -25,6 +25,7 @@ private:
 	UI32 m_WindowHeight;
 
 	std::vector<Renderer*> m_Renderers;
+	IDevice* m_Device;
 };
 
 static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

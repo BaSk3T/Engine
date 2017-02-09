@@ -2,7 +2,8 @@
 
 #include "DebugHelper.h"
 
-#include "Graphics\Renderer.h"
+#include "Graphics\Device.h"
+#include "Graphics\Renderers\CharacterRenderer.h"
 #include "TaskScheduler\TaskScheduler.h"
 
 System::System()
@@ -16,6 +17,13 @@ System::~System()
 {
 	TaskScheduler& ts = TaskScheduler::GetInstance();
 	ts.SyncWorkerThreads();
+
+	delete m_Device;
+	
+	for (auto renderer : m_Renderers)
+	{
+		delete renderer;
+	}
 }
 
 UI32 System::Run()
@@ -65,6 +73,14 @@ void System::InitializeWindow(UI32 width, UI32 height, HINSTANCE hInstance, int 
 	}
 
 	ShowWindow(m_hWnd, nCmdShow);
+
+	
+
+	// create device
+	m_Device = new Device(m_hWnd, width, height);
+
+	// add renderers
+	m_Renderers.push_back(new CharacterRenderer(m_Device));
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

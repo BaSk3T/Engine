@@ -20,6 +20,8 @@ InputLayout::InputLayout(IDevice& device, Shader<VertexShader>& vertexShader, st
 		desc.AlignedByteOffset = element.m_AlignedByteOffset;
 		desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		desc.InstanceDataStepRate = 0;
+
+		layout.push_back(desc);
 	}
 
 	//D3D11_INPUT_ELEMENT_DESC layout[] =

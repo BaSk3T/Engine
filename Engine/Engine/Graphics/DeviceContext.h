@@ -3,7 +3,7 @@
 
 struct ID3D11DeviceContext;
 
-#include "Interfaces\IDeviceContext.h"
+#include "Interfaces/IDeviceContext.h"
 
 class DeviceContext : public IDeviceContext
 {
@@ -16,6 +16,14 @@ public:
 	virtual void SetInputLayout(IInputLayout& inputLayout);
 	virtual void SetVertexBuffer(IBuffer& vertexBuffer, UI32 vertexSize);
 	virtual void SetIndexBuffer(IBuffer& indexBuffer);
+	virtual void SetConstantBuffer(IBuffer& constantBuffer);
+	virtual void SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE type);
+	virtual void ClearRenderTarget(IRenderTarget& renderTarget, ColorRGBA color);
+	virtual void Draw(UI32 vertexCount, UI32 startVertexLocation);
+	virtual void DrawIndexed(UI32 indexCount, UI32 startIndexLocation, int baseVertexLocation);
+
+	virtual void SetVertexShader(IShader& shader);
+	virtual void SetPixelShader(IShader& shader);
 
 private:
 	ID3D11DeviceContext* m_DeviceContext;

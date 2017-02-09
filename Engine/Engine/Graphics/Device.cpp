@@ -62,3 +62,8 @@ Device::~Device()
 	m_Swapchain->Release();
 	m_Device->Release();
 }
+
+void Device::Present()
+{
+	m_Swapchain->Present(0, 0);
+}

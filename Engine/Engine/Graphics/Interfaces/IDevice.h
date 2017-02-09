@@ -10,6 +10,8 @@ public:
 	IDevice() {};
 	virtual ~IDevice() {};
 
+	virtual void Present() = 0;
+
 	IDeviceContext* GetImmediateContext() const { return m_ImmediateContext; };
 	IRenderTarget* GetMainRenderTarget() const { return m_MainRenderTarget; };
 

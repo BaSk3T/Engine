@@ -1,17 +1,15 @@
-#include "VertexBuffer.h"
+#include "ConstantBuffer.h"
 
 #include "Device.h"
 #include "../DebugHelper.h"
 
-// https://msdn.microsoft.com/en-us/library/windows/desktop/ff476899(v=vs.85).aspx
-
-VertexBuffer::VertexBuffer(IDevice& device, UI32 vertexCount, UI32 vertexSize, void* data)
+ConstantBuffer::ConstantBuffer(IDevice& device, UI32 bufferSize, void* data)
 {
 	D3D11_BUFFER_DESC bufferDesc;
 
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.ByteWidth = vertexCount * vertexSize; // typeof(vertex) * n vertices
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.ByteWidth = bufferSize;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 
@@ -27,11 +25,11 @@ VertexBuffer::VertexBuffer(IDevice& device, UI32 vertexCount, UI32 vertexSize, v
 
 	if (FAILED(hr))
 	{
-		OUTPUT_DEBUG("Failed to create vertex buffer!\n");
+		OUTPUT_DEBUG("Failed to create constant buffer!\n");
 	}
 }
 
-VertexBuffer::~VertexBuffer()
+ConstantBuffer::~ConstantBuffer()
 {
 	m_Buffer->Release();
 }

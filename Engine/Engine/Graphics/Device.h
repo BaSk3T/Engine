@@ -15,6 +15,8 @@ public:
 
 	ID3D11Device* GetDevice() { return m_Device; };
 
+	virtual void Present();
+
 private:
 	ID3D11Device* m_Device;
 	IDXGISwapChain* m_Swapchain;

@@ -1,6 +1,5 @@
 #include "Shader.h"
 
-#include <d3d11.h>
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -55,3 +54,19 @@ void Shader<VertexShader>::CreateShader(IDevice& device)
 		OUTPUT_DEBUG("Failed to create vertex shader!\n");
 	}
 }
+
+template <>
+void Shader<PixelShader>::CreateShader(IDevice& device)
+{
+	ID3D11Device* dev = static_cast<Device&>(device).GetDevice();
+
+	HRESULT hr = dev->CreatePixelShader(m_Blob->GetBufferPointer(), m_Blob->GetBufferSize(), NULL, &m_Shader.m_Pointer);
+
+	if (FAILED(hr))
+	{
+		OUTPUT_DEBUG("Failed to create pixel shader!\n");
+	}
+}
+
+template class Shader<VertexShader>;
+template class Shader<PixelShader>;

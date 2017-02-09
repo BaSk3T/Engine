@@ -4,8 +4,9 @@
 #include <sstream>
 #include <Windows.h>
 
-#define OUTPUT_DEBUG									\
-std::stringstream ss;									\
-OutputDebugStringA(ss.str().c_str());					\
+#define OUTPUT_DEBUG(string)				\
+   std::ostringstream os_;                  \
+   os_ << string;                           \
+   OutputDebugStringA( os_.str().c_str() ); \
 
 #endif // !DEBUGHELPER_H
