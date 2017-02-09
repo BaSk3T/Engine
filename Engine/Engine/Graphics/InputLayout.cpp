@@ -1,9 +1,6 @@
 #include "InputLayout.h"
 
-#include <d3d11.h>
-
 #include "Device.h"
-#include "Shader.h"
 #include "FormatConverter.h"
 #include "../DebugHelper.h"
 
@@ -34,7 +31,6 @@ InputLayout::InputLayout(IDevice& device, Shader<VertexShader>& vertexShader, st
 
 	ID3DBlob* blob = vertexShader.GetBlob();
 	
-
 	HRESULT hr = dev->CreateInputLayout(&layout[0], layout.size(), blob->GetBufferPointer(), blob->GetBufferSize(), &m_Layout);
 
 	if (FAILED(hr))

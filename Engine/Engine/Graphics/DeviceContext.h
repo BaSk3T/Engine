@@ -1,13 +1,9 @@
 #ifndef DEVICECONTEXT_H
 #define DEVICECONTEXT_H
 
-class IRenderTarget;
-
-#include <d3d11.h>
-#pragma comment(lib, "d3d11.lib")
+struct ID3D11DeviceContext;
 
 #include "Interfaces\IDeviceContext.h"
-#include "../Types.h"
 
 class DeviceContext : public IDeviceContext
 {
@@ -15,8 +11,11 @@ public:
 	DeviceContext(ID3D11DeviceContext* deviceContext);
 	~DeviceContext();
 
-	void SetRenderTarget(IRenderTarget& renderTarget);
-	void SetViewPort(UI32 width, UI32 height, float minDepth, float maxDepth, UI32 x, UI32 y);
+	virtual void SetRenderTarget(IRenderTarget& renderTarget);
+	virtual void SetViewPort(UI32 width, UI32 height, float minDepth, float maxDepth, UI32 x, UI32 y);
+	virtual void SetInputLayout(IInputLayout& inputLayout);
+	virtual void SetVertexBuffer(IBuffer& vertexBuffer, UI32 vertexSize);
+	virtual void SetIndexBuffer(IBuffer& indexBuffer);
 
 private:
 	ID3D11DeviceContext* m_DeviceContext;
