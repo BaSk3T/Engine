@@ -105,6 +105,9 @@
     <ClCompile Include="Graphics\ConstantBuffer.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Buffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\Interfaces\IShader.h">
       <Filter>Header Files\Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Buffer.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

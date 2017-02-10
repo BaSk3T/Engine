@@ -4,6 +4,7 @@
 class IDevice;
 class IDeviceContext;
 class IBuffer;
+class InputLayout;
 
 #include "../Renderer.h"
 #include "../Shader.h"
@@ -26,6 +27,7 @@ private:
 	IBuffer* m_IndexBuffer;
 	IBuffer* m_VertexBuffer;
 	IBuffer* m_ConstantBuffer;
+	InputLayout* m_InputLayout;
 };
 
 #endif // !CHARACTERRENDERER_H

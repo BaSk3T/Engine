@@ -2,13 +2,13 @@
 #define INDEXBUFFER_H
 
 class IDevice;
-struct ID3D11Buffer;
 
-#include "Interfaces/IBuffer.h"
+
+#include "Buffer.h"
 #include "../Types.h"
 #include "Formats.h"
 
-class IndexBuffer : public IBuffer
+class IndexBuffer : public Buffer
 {
 public:
 	IndexBuffer(IDevice& device, UI32 bufferSize, RESOURCE_DATA_FORMAT dataFormat, void* data);
@@ -18,7 +18,6 @@ public:
 	RESOURCE_DATA_FORMAT GetFormat() const { return m_DataFormat;  }
 
 private:
-	ID3D11Buffer* m_Buffer;
 	RESOURCE_DATA_FORMAT m_DataFormat;
 };
 

@@ -47,12 +47,40 @@ Device::Device(HWND hwnd, UI32 width, UI32 height)
 		OUTPUT_DEBUG("Failed to initialize device!\n");
 	}
 
-	m_ImmediateContext = new DeviceContext(deviceContext);
-
 	ID3D11Texture2D* backBuffer;
 	m_Swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 
+	m_ImmediateContext = new DeviceContext(deviceContext);
 	m_MainRenderTarget = new RenderTarget(*this, backBuffer);
+
+	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	backBuffer->GetDesc(&depthBufferDesc);
+
+	ID3D11Texture2D* depthStencilTexture;
+	D3D11_TEXTURE2D_DESC descDepth;
+	ZeroMemory(&descDepth, sizeof(descDepth));
+
+	descDepth.Width = depthBufferDesc.Width;
+	descDepth.Height = depthBufferDesc.Height;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	hr = m_Device->CreateTexture2D(&descDepth, NULL, &depthStencilTexture);
+
+	if (FAILED(hr))
+	{
+		OUTPUT_DEBUG("Failed to create depth buffer texture!\n");
+	}
+
+	static_cast<DeviceContext*>(m_ImmediateContext)->CreateDepthStencilBuffer(m_Device, depthStencilTexture);
+
+	depthStencilTexture->Release();
 }
 
 Device::~Device()

@@ -35,48 +35,36 @@ CharacterRenderer::CharacterRenderer(IDevice* device)
 	m_PixelShader = new Shader<PixelShader>(*m_Device, L"Graphics/Shaders/PhongPixelShader.hlsl", "main", "ps_5_0");
 
 	std::vector<InputElement> vec;
-
 	vec.push_back({ "POSITION"	, 0, RESOURCE_DATA_FORMAT_R32G32B32_FLOAT, 0, 0 });
 	vec.push_back({ "COLOR"		, 0, RESOURCE_DATA_FORMAT_R32G32B32_FLOAT, 0, 12 });
 
-	InputLayout* inputLayout = new InputLayout(*m_Device, *m_VertexShader, vec);
-
-	m_DeviceContext->SetInputLayout(*inputLayout);
+	m_InputLayout = new InputLayout(*m_Device, *m_VertexShader, vec);
 
 	// cube indices
-	//UI32 indices[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1 };
-	//Vertex cubeVertices[] = {
-	//	{Vector3( -1.0, -1.0,  1.0 ), Vector3( 1.0, 0.0, 0.0 )},
-	//	{Vector3(  1.0, -1.0,  1.0 ), Vector3( 0.0, 1.0, 0.0 )},
-	//	{Vector3( -1.0,  1.0,  1.0 ), Vector3( 0.0, 0.0, 1.0 )},
-	//	{Vector3(  1.0,  1.0,  1.0 ), Vector3( 0.0, 0.0, 1.0 )},
-	//	{Vector3( -1.0, -1.0, -1.0 ), Vector3( 0.0, 1.0, 0.0 )},
-	//	{Vector3(  1.0, -1.0, -1.0 ), Vector3( 1.0, 0.0, 0.0 )},
-	//	{Vector3( -1.0,  1.0, -1.0 ), Vector3( 1.0, 0.0, 0.0 )},
-	//	{Vector3(  1.0,  1.0, -1.0 ), Vector3( 0.0, 1.0, 0.0 )}
-	//};
-
-	UI32 indices[] = { 0, 1, 2 };
+	UI32 indices[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1 };
 	Vertex cubeVertices[] = {
-		{Vector3(-1.0f, -1.0f, 0.0f), Vector3(1.0, 0.0, 0.0)},
-		{Vector3(0.0f, 1.0f, 0.0f), Vector3(0.5, 0.0, 0.0)},
-		{Vector3(1.0f, -1.0f, 0.0f), Vector3(0.0, 0.0, 1.0)}
+		{Vector3( -1.0f, -1.0f,  1.0f ), Vector3( 1.0f, 0.0f, 0.0f )},
+		{Vector3(  1.0f, -1.0f,  1.0f ), Vector3( 0.0f, 0.7f, 0.7f )},
+		{Vector3( -1.0f,  1.0f,  1.0f ), Vector3( 0.0f, 0.0f, 1.0f )},
+		{Vector3(  1.0f,  1.0f,  1.0f ), Vector3( 0.0f, 0.0f, 1.0f )},
+		{Vector3( -1.0f, -1.0f, -1.0f ), Vector3( 0.0f, 0.7f, 0.7f)},
+		{Vector3(  1.0f, -1.0f, -1.0f ), Vector3( 1.0f, 0.0f, 0.0f )},
+		{Vector3( -1.0f,  1.0f, -1.0f ), Vector3( 1.0f, 0.0f, 0.0f )},
+		{Vector3(  1.0f,  1.0f, -1.0f ), Vector3( 0.0f, 0.7f, 0.7f)}
 	};
 
-	m_IndexBuffer = new IndexBuffer(*m_Device, 3, RESOURCE_DATA_FORMAT_R32_UINT, &indices[0]);
-	m_VertexBuffer = new VertexBuffer(*m_Device, 3, sizeof(Vertex), &cubeVertices[0]);
+	m_IndexBuffer = new IndexBuffer(*m_Device, 14, RESOURCE_DATA_FORMAT_R32_UINT, &indices[0]);
+	m_VertexBuffer = new VertexBuffer(*m_Device, 8, sizeof(Vertex), &cubeVertices[0]);
 
-	DirectX::XMVECTOR camera = { 0, 0, 35, 1 };
-
-	float a = float(640.f / 860.f);
+	DirectX::XMVECTOR camera = { 3.5f, 3.5f, 3.5f, 1 };
+	float aspectRatio = float(860.f / 640.f);
 
 	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(0, 0, 0);
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtRH(camera, { 0, 0, 0, 1 }, { 0, 1, 0, 1 });
-	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(90), a, 0.1f, 1.0f);
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtRH(camera, { 0, 0, 0, 1 }, { 0, 1, 0, 0 });
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(90), aspectRatio, 0.1f, 10000.0f);
 
 	ConstantBufferMatrices cbm;
-
-	cbm.m_WorldViewProjection = world * view /** projection*/;
+	cbm.m_WorldViewProjection = world * view * projection;
 
 	m_ConstantBuffer = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMatrices), &cbm);
 
@@ -84,6 +72,7 @@ CharacterRenderer::CharacterRenderer(IDevice* device)
 }
 CharacterRenderer::~CharacterRenderer()
 {
+	delete m_InputLayout;
 	delete m_ConstantBuffer;
 	delete m_IndexBuffer;
 	delete m_VertexBuffer;
@@ -98,17 +87,18 @@ void CharacterRenderer::RenderFrame()
 
 	m_DeviceContext->SetVertexShader(*m_VertexShader);
 	m_DeviceContext->SetPixelShader(*m_PixelShader);
-	m_DeviceContext->SetConstantBuffer(*m_ConstantBuffer);
 
-	m_DeviceContext->SetIndexBuffer(*m_IndexBuffer);
+	m_DeviceContext->SetInputLayout(*m_InputLayout);
+	m_DeviceContext->SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE_TRIANGLESTRIP);
+
 	m_DeviceContext->SetVertexBuffer(*m_VertexBuffer, sizeof(Vertex));
-
-	m_DeviceContext->SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE_TRIANGLELIST);
+	m_DeviceContext->SetIndexBuffer(*m_IndexBuffer);
+	m_DeviceContext->SetConstantBuffer(*m_ConstantBuffer);
 
 	m_DeviceContext->SetRenderTarget(*renderTarget);
 	m_DeviceContext->ClearRenderTarget(*renderTarget, clearColor);
-
-	m_DeviceContext->DrawIndexed(3, 0, 0);
-
+	m_DeviceContext->ClearDepthStencilBuffer();
+	
+	m_DeviceContext->DrawIndexed(14, 0, 0);
 	m_Device->Present();
 }

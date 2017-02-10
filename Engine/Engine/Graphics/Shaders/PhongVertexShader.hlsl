@@ -24,7 +24,7 @@ PS_OUTPUT main(VS_INPUT input)
 
 	float4 pos = float4(input.position, 1);
 
-	pos = mul(pos, worldViewProjection);
+	pos = mul(worldViewProjection, pos);
 
 	output.position = pos;
 	output.color = float4(input.color, 1);
