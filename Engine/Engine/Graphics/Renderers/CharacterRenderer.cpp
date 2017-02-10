@@ -27,9 +27,11 @@ struct ConstantBufferMatrices
 	DirectX::XMMATRIX m_WorldViewProjection;
 };
 
-CharacterRenderer::CharacterRenderer(IDevice* device)
+CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 	: m_DeviceContext(device->GetImmediateContext()),
-	m_Device(device)
+	m_Device(device),
+	m_Width(width),
+	m_Height(height)
 {
 	m_VertexShader = new Shader<VertexShader>(*m_Device, L"Graphics/Shaders/PhongVertexShader.hlsl", "main", "vs_5_0");
 	m_PixelShader = new Shader<PixelShader>(*m_Device, L"Graphics/Shaders/PhongPixelShader.hlsl", "main", "ps_5_0");
@@ -56,19 +58,9 @@ CharacterRenderer::CharacterRenderer(IDevice* device)
 	m_IndexBuffer = new IndexBuffer(*m_Device, 14, RESOURCE_DATA_FORMAT_R32_UINT, &indices[0]);
 	m_VertexBuffer = new VertexBuffer(*m_Device, 8, sizeof(Vertex), &cubeVertices[0]);
 
-	DirectX::XMVECTOR camera = { 3.5f, 3.5f, 3.5f, 1 };
-	float aspectRatio = float(860.f / 640.f);
+	m_ConstantBuffer = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMatrices), nullptr);
 
-	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(0, 0, 0);
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtRH(camera, { 0, 0, 0, 1 }, { 0, 1, 0, 0 });
-	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(90), aspectRatio, 0.1f, 10000.0f);
-
-	ConstantBufferMatrices cbm;
-	cbm.m_WorldViewProjection = world * view * projection;
-
-	m_ConstantBuffer = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMatrices), &cbm);
-
-	m_DeviceContext->SetViewPort(860, 640, 0.0f, 1.0f, 0, 0);
+	m_DeviceContext->SetViewPort(m_Width, m_Height, 0.0f, 1.0f, 0, 0);
 }
 CharacterRenderer::~CharacterRenderer()
 {
@@ -84,6 +76,20 @@ void CharacterRenderer::RenderFrame()
 {
 	ColorRGBA clearColor = { 0, 1, 0, 0 };
 	IRenderTarget* renderTarget = m_Device->GetMainRenderTarget();
+
+	DirectX::XMVECTOR camera = { 3.5f, 3.5f, 3.5f, 0 };
+	float aspectRatio = float(m_Width) / m_Height;
+
+	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(0, 0, 0);
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtRH(camera, { 0, 0, 0, 1 }, { 0, 1, 0, 0 });
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(90), aspectRatio, 0.1f, 10000.0f);
+
+	ConstantBufferMatrices cbm;
+	cbm.m_WorldViewProjection = world * view * projection;
+
+	void* data = m_ConstantBuffer->Map(m_DeviceContext, MAP_WRITE_DISCARD);
+	memcpy(data, &cbm, sizeof(ConstantBufferMatrices));
+	m_ConstantBuffer->Unmap(m_DeviceContext);
 
 	m_DeviceContext->SetVertexShader(*m_VertexShader);
 	m_DeviceContext->SetPixelShader(*m_PixelShader);

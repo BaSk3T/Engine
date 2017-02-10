@@ -6,18 +6,22 @@ class IDeviceContext;
 class IBuffer;
 class InputLayout;
 
+#include "../../Types.h"
 #include "../Renderer.h"
 #include "../Shader.h"
 
 class CharacterRenderer : public Renderer
 {
 public:
-	CharacterRenderer(IDevice* device);
+	CharacterRenderer(IDevice* device, UI32 width, UI32 height);
 	~CharacterRenderer();
 
 	virtual void RenderFrame();
 
 private:
+	UI32 m_Width;
+	UI32 m_Height;
+
 	IDevice* m_Device;
 	IDeviceContext* m_DeviceContext;
 

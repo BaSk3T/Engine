@@ -31,6 +31,8 @@ public:
 	virtual void Draw(UI32 vertexCount, UI32 startVertexLocation);
 	virtual void DrawIndexed(UI32 indexCount, UI32 startIndexLocation, int baseVertexLocation);
 
+	ID3D11DeviceContext* GetPointer() const { return m_DeviceContext; };
+
 private:
 	friend class Device;
 	void CreateDepthStencilBuffer(ID3D11Device* device, ID3D11Texture2D* depthStencilTexture);

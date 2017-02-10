@@ -3,7 +3,6 @@
 
 class IDevice;
 
-
 #include "Buffer.h"
 #include "../Types.h"
 #include "Formats.h"

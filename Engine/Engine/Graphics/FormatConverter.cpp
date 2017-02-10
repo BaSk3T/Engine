@@ -36,3 +36,20 @@ D3D_PRIMITIVE_TOPOLOGY ConvertPrimitive(PRIMITIVE_TOPOLOGY_TYPE type)
 
 	return s_PrimitveTopologyTypes[type];
 }
+
+D3D11_MAP ConvertMapType(MAP_TYPE type)
+{
+	static D3D11_MAP s_MapType[]
+	{
+		D3D11_MAP_READ,
+		D3D11_MAP_WRITE,
+		D3D11_MAP_READ_WRITE,
+		D3D11_MAP_WRITE_DISCARD,
+		D3D11_MAP_WRITE_NO_OVERWRITE
+	};
+
+	// make sure number of elements in s_MapType is equal to count in MAP_TYPE
+	assert(sizeof(s_MapType) / sizeof(s_MapType[0]) == MAP_COUNT);
+
+	return s_MapType[type];
+}

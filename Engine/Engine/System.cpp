@@ -80,7 +80,7 @@ void System::InitializeWindow(UI32 width, UI32 height, HINSTANCE hInstance, int 
 	m_Device = new Device(m_hWnd, width, height);
 
 	// add renderers
-	m_Renderers.push_back(new CharacterRenderer(m_Device));
+	m_Renderers.push_back(new CharacterRenderer(m_Device, width, height));
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

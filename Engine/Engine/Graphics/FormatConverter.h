@@ -7,5 +7,6 @@
 
 DXGI_FORMAT ConvertResourceDataFormat(RESOURCE_DATA_FORMAT type);
 D3D_PRIMITIVE_TOPOLOGY ConvertPrimitive(PRIMITIVE_TOPOLOGY_TYPE type);
+D3D11_MAP ConvertMapType(MAP_TYPE type);
 
 #endif // !FORMATCONVERTER_H
