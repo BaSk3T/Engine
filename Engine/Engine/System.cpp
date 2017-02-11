@@ -5,6 +5,7 @@
 #include "Graphics\Device.h"
 #include "Graphics\Renderers\CharacterRenderer.h"
 #include "TaskScheduler\TaskScheduler.h"
+#include "Input\WindowsGamepadHandler.h"
 
 System::System()
 {
@@ -19,7 +20,8 @@ System::~System()
 	ts.SyncWorkerThreads();
 
 	delete m_Device;
-	
+	delete m_GamepadHandler;
+
 	for (auto renderer : m_Renderers)
 	{
 		delete renderer;
@@ -30,6 +32,8 @@ UI32 System::Run()
 {
 	MSG msg = { 0 };
 
+	m_GamepadHandler = new WindowsGamepadHandler();
+
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -37,6 +41,9 @@ UI32 System::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
+		m_GamepadHandler->HandleInput();
+		Gamepad& gamepad = m_GamepadHandler->GetGamepad();
 
 		for (auto renderer : m_Renderers)
 		{

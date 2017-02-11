@@ -49,6 +49,12 @@
     <Filter Include="Header Files\Graphics\Shaders">
       <UniqueIdentifier>{9385d281-b2e2-491b-a0c8-ca4e501eea1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{866360ec-7956-46da-8a56-957d20e49121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{4c38752f-48ce-4b5b-b98c-368d8724a1de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -107,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="Graphics\Buffer.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\WindowsGamepadHandler.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +205,12 @@
     </ClInclude>
     <ClInclude Include="Graphics\Buffer.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\WindowsGamepadHandler.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Interfaces\IGamepadHandler.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

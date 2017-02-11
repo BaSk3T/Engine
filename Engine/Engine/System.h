@@ -3,6 +3,7 @@
 
 class Renderer;
 class IDevice;
+class IGamepadHandler;
 
 #include <vector>
 #include <Windows.h>
@@ -24,8 +25,10 @@ private:
 	UI32 m_WindowWidth;
 	UI32 m_WindowHeight;
 
-	std::vector<Renderer*> m_Renderers;
 	IDevice* m_Device;
+	std::vector<Renderer*> m_Renderers;
+	IGamepadHandler* m_GamepadHandler;
+
 };
 
 static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

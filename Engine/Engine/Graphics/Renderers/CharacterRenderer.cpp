@@ -57,7 +57,6 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 
 	m_IndexBuffer = new IndexBuffer(*m_Device, 14, RESOURCE_DATA_FORMAT_R32_UINT, &indices[0]);
 	m_VertexBuffer = new VertexBuffer(*m_Device, 8, sizeof(Vertex), &cubeVertices[0]);
-
 	m_ConstantBuffer = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMatrices), nullptr);
 
 	m_DeviceContext->SetViewPort(m_Width, m_Height, 0.0f, 1.0f, 0, 0);
