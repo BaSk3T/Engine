@@ -47,6 +47,11 @@ UI32 System::Run()
 
 		for (auto renderer : m_Renderers)
 		{
+			static_cast<CharacterRenderer*>(renderer)->m_Camera->HandleInput(gamepad.m_LeftStickMagnitudeX,
+				gamepad.m_LeftStickMagnitudeY,
+				gamepad.m_RightStickMagnitudeX,
+				gamepad.m_RightStickMagnitudeY);
+
 			renderer->RenderFrame();
 		}
 	}
@@ -80,8 +85,6 @@ void System::InitializeWindow(UI32 width, UI32 height, HINSTANCE hInstance, int 
 	}
 
 	ShowWindow(m_hWnd, nCmdShow);
-
-	
 
 	// create device
 	m_Device = new Device(m_hWnd, width, height);

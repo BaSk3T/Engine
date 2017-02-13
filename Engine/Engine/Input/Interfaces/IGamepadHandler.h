@@ -3,9 +3,20 @@
 
 struct Gamepad
 {
+	Gamepad() : m_LeftStickMagnitude(0),
+		m_LeftStickMagnitudeX(0),
+		m_LeftStickMagnitudeY(0),
+		m_RightStickMagnitude(0),
+		m_RightStickMagnitudeX(0),
+		m_RightStickMagnitudeY(0) {};
+
 	float m_LeftStickMagnitude;
-	bool m_LeftStickIsRight;
-	bool m_LeftStickIsUp;
+	float m_LeftStickMagnitudeX;
+	float m_LeftStickMagnitudeY;
+
+	float m_RightStickMagnitude;
+	float m_RightStickMagnitudeX;
+	float m_RightStickMagnitudeY;
 };
 
 class IGamepadHandler

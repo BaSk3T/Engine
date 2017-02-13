@@ -81,6 +81,8 @@ Device::Device(HWND hwnd, UI32 width, UI32 height)
 	static_cast<DeviceContext*>(m_ImmediateContext)->CreateDepthStencilBuffer(m_Device, depthStencilTexture);
 
 	depthStencilTexture->Release();
+
+	static_cast<DeviceContext*>(m_ImmediateContext)->CreateRasterizerState(m_Device);
 }
 
 Device::~Device()

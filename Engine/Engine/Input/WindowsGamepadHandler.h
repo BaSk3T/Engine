@@ -15,7 +15,8 @@ public:
 	virtual void HandleInput();
 
 private:
-	void LeftStickMagnitude(XINPUT_STATE& state);
+	void HandleLeftStick(XINPUT_STATE& state);
+	void HandleRightStick(XINPUT_STATE& state);
 };
 
 #endif // !WINDOWSGAMEPADHANDLER_H

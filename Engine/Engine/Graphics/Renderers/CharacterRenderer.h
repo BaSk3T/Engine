@@ -9,6 +9,7 @@ class InputLayout;
 #include "../../Types.h"
 #include "../Renderer.h"
 #include "../Shader.h"
+#include "../Camera.h"
 
 class CharacterRenderer : public Renderer
 {
@@ -17,6 +18,8 @@ public:
 	~CharacterRenderer();
 
 	virtual void RenderFrame();
+
+	Camera* m_Camera;
 
 private:
 	UI32 m_Width;

@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\Buffer.cpp" />
+    <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Graphics\Device.cpp" />
     <ClCompile Include="Graphics\DeviceContext.cpp" />
@@ -147,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="DebugHelper.h" />
     <ClInclude Include="Graphics\Buffer.h" />
+    <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\Device.h" />
     <ClInclude Include="Graphics\DeviceContext.h" />

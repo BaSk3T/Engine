@@ -33,6 +33,8 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 	m_Width(width),
 	m_Height(height)
 {
+	m_Camera = new(_aligned_malloc(sizeof(Camera), 16)) Camera(0, 0, 3.5f);
+
 	m_VertexShader = new Shader<VertexShader>(*m_Device, L"Graphics/Shaders/PhongVertexShader.hlsl", "main", "vs_5_0");
 	m_PixelShader = new Shader<PixelShader>(*m_Device, L"Graphics/Shaders/PhongPixelShader.hlsl", "main", "ps_5_0");
 
@@ -63,6 +65,8 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 }
 CharacterRenderer::~CharacterRenderer()
 {
+	_aligned_free(m_Camera);
+
 	delete m_InputLayout;
 	delete m_ConstantBuffer;
 	delete m_IndexBuffer;
@@ -76,15 +80,13 @@ void CharacterRenderer::RenderFrame()
 	ColorRGBA clearColor = { 0, 1, 0, 0 };
 	IRenderTarget* renderTarget = m_Device->GetMainRenderTarget();
 
-	DirectX::XMVECTOR camera = { 3.5f, 3.5f, 3.5f, 0 };
 	float aspectRatio = float(m_Width) / m_Height;
 
 	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(0, 0, 0);
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtRH(camera, { 0, 0, 0, 1 }, { 0, 1, 0, 0 });
-	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(90), aspectRatio, 0.1f, 10000.0f);
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(45), aspectRatio, 1.0f, 100.0f);
 
 	ConstantBufferMatrices cbm;
-	cbm.m_WorldViewProjection = world * view * projection;
+	cbm.m_WorldViewProjection = world * m_Camera->GetViewMatrix() * projection;
 
 	void* data = m_ConstantBuffer->Map(m_DeviceContext, MAP_WRITE_DISCARD);
 	memcpy(data, &cbm, sizeof(ConstantBufferMatrices));

@@ -1,0 +1,58 @@
+#include "Camera.h"
+
+// camera should be singleton?
+
+Camera::Camera(float x, float y, float z) :
+	m_Pitch(0),
+	m_Yaw(0),
+	m_PositionXChange(0),
+	m_PositionZChange(0),
+	m_Position({x, y, z, 0})
+{
+	SetDefaultDirections();
+}
+
+Camera::~Camera()
+{
+}
+
+DirectX::XMMATRIX Camera::GetViewMatrix()
+{
+	DirectX::XMMATRIX cameraRotation = DirectX::XMMatrixRotationRollPitchYaw(m_Pitch, m_Yaw, 0);
+	DirectX::XMVECTOR cameraTarget = DirectX::XMVector3Transform(m_CameraDefaultForward, cameraRotation);
+	cameraTarget = DirectX::XMVector3Normalize(cameraTarget);
+
+	DirectX::XMVECTOR newForward = DirectX::XMVector3Transform(m_CameraDefaultForward, cameraRotation);
+	DirectX::XMVECTOR newRight = DirectX::XMVector3Transform(m_CameraDefaultRight, cameraRotation);
+	DirectX::XMVECTOR newUp = DirectX::XMVector3Transform(m_CameraDefaultUp, cameraRotation);
+
+	m_Position = DirectX::XMVectorAdd(m_Position, DirectX::XMVectorScale(newRight, m_PositionXChange));
+	m_Position = DirectX::XMVectorAdd(m_Position, DirectX::XMVectorScale(newForward, m_PositionZChange));
+
+	DirectX::XMVECTOR newTarget = DirectX::XMVectorSubtract(m_Position, cameraTarget);
+	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtRH(m_Position, newTarget, newUp);
+
+	return viewMatrix;
+}
+
+void Camera::HandleInput(float leftStickX, float leftStickY, float rightStickX, float rightStickY)
+{
+	leftStickX /= 800;
+	leftStickY /= 800;
+
+	rightStickX /= 1500;
+	rightStickY /= 1500;
+
+	m_PositionXChange = leftStickX;
+	m_PositionZChange = -leftStickY;
+
+	m_Pitch += rightStickY;
+	m_Yaw += -rightStickX;
+}
+
+void Camera::SetDefaultDirections()
+{
+	m_CameraDefaultForward = DirectX::XMVectorSet(0, 0, 1, 0);
+	m_CameraDefaultRight = DirectX::XMVectorSet(1, 0, 0, 0);
+	m_CameraDefaultUp = DirectX::XMVectorSet(0, 1, 0, 0);
+}

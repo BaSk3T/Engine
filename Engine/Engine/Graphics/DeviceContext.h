@@ -6,6 +6,7 @@ struct ID3D11DeviceContext;
 struct ID3D11DepthStencilView;
 struct ID3D11DepthStencilState;
 struct ID3D11Texture2D;
+struct ID3D11RasterizerState;
 
 #include "Interfaces/IDeviceContext.h"
 
@@ -36,10 +37,12 @@ public:
 private:
 	friend class Device;
 	void CreateDepthStencilBuffer(ID3D11Device* device, ID3D11Texture2D* depthStencilTexture);
+	void CreateRasterizerState(ID3D11Device* device);
 
 	ID3D11DeviceContext* m_DeviceContext;
 	ID3D11DepthStencilView* m_DepthStencilView;
 	ID3D11DepthStencilState* m_DepthStencilState;
+	ID3D11RasterizerState* m_RasterizerState;
 };
 
 #endif // !DEVICECONTEXT_H

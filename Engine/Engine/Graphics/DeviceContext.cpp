@@ -19,6 +19,7 @@ DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext)
 
 DeviceContext::~DeviceContext()
 {
+	m_RasterizerState->Release();
 	m_DepthStencilView->Release();
 	m_DepthStencilState->Release();
 	m_DeviceContext->Release();
@@ -172,4 +173,23 @@ void DeviceContext::CreateDepthStencilBuffer(ID3D11Device* device, ID3D11Texture
 	{
 		OUTPUT_DEBUG("Failed to create depth stencil view!\n");
 	}
+}
+
+void DeviceContext::CreateRasterizerState(ID3D11Device* device)
+{
+	D3D11_RASTERIZER_DESC rasterizerState;
+	rasterizerState.FillMode = D3D11_FILL_SOLID;
+	rasterizerState.CullMode = D3D11_CULL_BACK;
+	rasterizerState.FrontCounterClockwise = true;
+	rasterizerState.DepthBias = false;
+	rasterizerState.DepthBiasClamp = 0;
+	rasterizerState.SlopeScaledDepthBias = 0;
+	rasterizerState.DepthClipEnable = true;
+	rasterizerState.ScissorEnable = false;
+	rasterizerState.MultisampleEnable = false;
+	rasterizerState.AntialiasedLineEnable = false;
+
+	device->CreateRasterizerState(&rasterizerState, &m_RasterizerState);
+
+	m_DeviceContext->RSSetState(m_RasterizerState);
 }
