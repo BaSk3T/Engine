@@ -20,9 +20,9 @@ DirectX::XMMATRIX Camera::GetViewMatrix()
 {
 	DirectX::XMMATRIX cameraRotation = DirectX::XMMatrixRotationRollPitchYaw(m_Pitch, m_Yaw, 0);
 	DirectX::XMVECTOR cameraTarget = DirectX::XMVector3Transform(m_CameraDefaultForward, cameraRotation);
+	DirectX::XMVECTOR newForward = cameraTarget;
 	cameraTarget = DirectX::XMVector3Normalize(cameraTarget);
 
-	DirectX::XMVECTOR newForward = DirectX::XMVector3Transform(m_CameraDefaultForward, cameraRotation);
 	DirectX::XMVECTOR newRight = DirectX::XMVector3Transform(m_CameraDefaultRight, cameraRotation);
 	DirectX::XMVECTOR newUp = DirectX::XMVector3Transform(m_CameraDefaultUp, cameraRotation);
 
