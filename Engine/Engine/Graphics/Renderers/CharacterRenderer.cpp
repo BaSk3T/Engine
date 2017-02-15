@@ -5,22 +5,10 @@
 #include "../Device.h"
 #include "../DeviceContext.h"
 #include "../InputLayout.h"
-#include "../VertexBuffer.h"
-#include "../IndexBuffer.h"
 #include "../ConstantBuffer.h"
 #include "../Formats.h"
-
-struct Vector3
-{
-	Vector3(float x, float y, float z) : x(x), y(y), z(z) {};
-	float x, y, z;
-};
-
-struct Vertex
-{
-	Vector3 m_Position;
-	Vector3 m_Color;
-};
+#include "../Camera.h"
+#include "../Mesh.h"
 
 struct ConstantBufferMatrices
 {
@@ -33,7 +21,9 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 	m_Width(width),
 	m_Height(height)
 {
-	m_Camera = new(_aligned_malloc(sizeof(Camera), 16)) Camera(0, 0, 3.5f);
+	m_Camera = new(_aligned_malloc(sizeof(Camera), 16)) Camera(0, 0, 15.0f);
+
+	m_Mesh = new Mesh(*m_Device, "Models/dragon.obj");
 
 	m_VertexShader = new Shader<VertexShader>(*m_Device, L"Graphics/Shaders/PhongVertexShader.hlsl", "main", "vs_5_0");
 	m_PixelShader = new Shader<PixelShader>(*m_Device, L"Graphics/Shaders/PhongPixelShader.hlsl", "main", "ps_5_0");
@@ -43,22 +33,6 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 	vec.push_back({ "COLOR"		, 0, RESOURCE_DATA_FORMAT_R32G32B32_FLOAT, 0, 12 });
 
 	m_InputLayout = new InputLayout(*m_Device, *m_VertexShader, vec);
-
-	// cube indices
-	UI32 indices[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1 };
-	Vertex cubeVertices[] = {
-		{Vector3( -1.0f, -1.0f,  1.0f ), Vector3( 1.0f, 0.0f, 0.0f )},
-		{Vector3(  1.0f, -1.0f,  1.0f ), Vector3( 0.0f, 0.7f, 0.7f )},
-		{Vector3( -1.0f,  1.0f,  1.0f ), Vector3( 0.0f, 0.0f, 1.0f )},
-		{Vector3(  1.0f,  1.0f,  1.0f ), Vector3( 0.0f, 0.0f, 1.0f )},
-		{Vector3( -1.0f, -1.0f, -1.0f ), Vector3( 0.0f, 0.7f, 0.7f)},
-		{Vector3(  1.0f, -1.0f, -1.0f ), Vector3( 1.0f, 0.0f, 0.0f )},
-		{Vector3( -1.0f,  1.0f, -1.0f ), Vector3( 1.0f, 0.0f, 0.0f )},
-		{Vector3(  1.0f,  1.0f, -1.0f ), Vector3( 0.0f, 0.7f, 0.7f)}
-	};
-
-	m_IndexBuffer = new IndexBuffer(*m_Device, 14, RESOURCE_DATA_FORMAT_R32_UINT, &indices[0]);
-	m_VertexBuffer = new VertexBuffer(*m_Device, 8, sizeof(Vertex), &cubeVertices[0]);
 	m_ConstantBuffer = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMatrices), nullptr);
 
 	m_DeviceContext->SetViewPort(m_Width, m_Height, 0.0f, 1.0f, 0, 0);
@@ -67,10 +41,9 @@ CharacterRenderer::~CharacterRenderer()
 {
 	_aligned_free(m_Camera);
 
+	delete m_Mesh;
 	delete m_InputLayout;
 	delete m_ConstantBuffer;
-	delete m_IndexBuffer;
-	delete m_VertexBuffer;
 	delete m_PixelShader;
 	delete m_VertexShader;
 }
@@ -96,16 +69,15 @@ void CharacterRenderer::RenderFrame()
 	m_DeviceContext->SetPixelShader(*m_PixelShader);
 
 	m_DeviceContext->SetInputLayout(*m_InputLayout);
-	m_DeviceContext->SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE_TRIANGLESTRIP);
+	m_DeviceContext->SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE_TRIANGLELIST);
 
-	m_DeviceContext->SetVertexBuffer(*m_VertexBuffer, sizeof(Vertex));
-	m_DeviceContext->SetIndexBuffer(*m_IndexBuffer);
+	m_Mesh->SetBuffers(*m_DeviceContext);
 	m_DeviceContext->SetConstantBuffer(*m_ConstantBuffer);
 
 	m_DeviceContext->SetRenderTarget(*renderTarget);
 	m_DeviceContext->ClearRenderTarget(*renderTarget, clearColor);
 	m_DeviceContext->ClearDepthStencilBuffer();
 	
-	m_DeviceContext->DrawIndexed(14, 0, 0);
+	m_DeviceContext->DrawIndexed(m_Mesh->GetNumberOfIndices(), 0, 0);
 	m_Device->Present();
 }

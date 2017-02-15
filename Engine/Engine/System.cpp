@@ -6,6 +6,7 @@
 #include "Graphics\Renderers\CharacterRenderer.h"
 #include "TaskScheduler\TaskScheduler.h"
 #include "Input\WindowsGamepadHandler.h"
+#include "Graphics\Camera.h"
 
 System::System()
 {

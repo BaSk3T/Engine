@@ -5,11 +5,12 @@ class IDevice;
 class IDeviceContext;
 class IBuffer;
 class InputLayout;
+class Camera;
+class Mesh;
 
 #include "../../Types.h"
 #include "../Renderer.h"
 #include "../Shader.h"
-#include "../Camera.h"
 
 class CharacterRenderer : public Renderer
 {
@@ -31,10 +32,10 @@ private:
 	Shader<VertexShader>* m_VertexShader;
 	Shader<PixelShader>* m_PixelShader;
 
-	IBuffer* m_IndexBuffer;
-	IBuffer* m_VertexBuffer;
 	IBuffer* m_ConstantBuffer;
 	InputLayout* m_InputLayout;
+
+	Mesh* m_Mesh;
 };
 
 #endif // !CHARACTERRENDERER_H
