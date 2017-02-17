@@ -23,6 +23,8 @@ DirectX::XMMATRIX Camera::GetViewMatrix()
 	DirectX::XMVECTOR newForward = cameraTarget;
 	cameraTarget = DirectX::XMVector3Normalize(cameraTarget);
 
+	m_ViewDirection = cameraTarget;
+
 	DirectX::XMVECTOR newRight = DirectX::XMVector3Transform(m_CameraDefaultRight, cameraRotation);
 	DirectX::XMVECTOR newUp = DirectX::XMVector3Transform(m_CameraDefaultUp, cameraRotation);
 
@@ -37,11 +39,11 @@ DirectX::XMMATRIX Camera::GetViewMatrix()
 
 void Camera::HandleInput(float leftStickX, float leftStickY, float rightStickX, float rightStickY)
 {
-	leftStickX /= 800;
-	leftStickY /= 800;
+	leftStickX /= 200;
+	leftStickY /= 200;
 
-	rightStickX /= 1500;
-	rightStickY /= 1500;
+	rightStickX /= 1000;
+	rightStickY /= 1000;
 
 	m_PositionXChange = leftStickX;
 	m_PositionZChange = -leftStickY;

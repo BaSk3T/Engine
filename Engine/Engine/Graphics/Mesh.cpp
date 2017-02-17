@@ -12,13 +12,6 @@
 #include "DeviceContext.h"
 
 // later should be moved in another file
-struct Vector3
-{
-	Vector3(float x, float y, float z) : x(x), y(y), z(z) {};
-	float x, y, z;
-};
-
-// later should be moved in another file
 struct Vertex
 {
 	Vector3 m_Position;
@@ -28,7 +21,9 @@ struct Vertex
 Mesh::Mesh(IDevice& device, char* path)
 {
 	Assimp::Importer importer;
-	const aiScene* modelLoaded = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+	const aiScene* modelLoaded = importer.ReadFile(path, aiProcess_Triangulate	|
+												aiProcess_JoinIdenticalVertices |
+												aiProcess_GenNormals);
 
 	std::vector<UI32> indices;
 	std::vector<Vertex> vertices;
@@ -36,6 +31,19 @@ Mesh::Mesh(IDevice& device, char* path)
 	for (UI32 i = 0; i < modelLoaded->mNumMeshes; i++)
 	{
 		aiMesh* mesh = modelLoaded->mMeshes[i];
+		
+		aiMaterial* mat = modelLoaded->mMaterials[mesh->mMaterialIndex];
+
+		aiColor3D ambient(0.f, 0.f, 0.f);
+		aiColor3D diffuse(0.f, 0.f, 0.f);
+		aiColor3D specular(0.f, 0.f, 0.f);
+		mat->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
+		mat->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+		mat->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+
+		m_MaterialAmbient = Vector3(ambient.r, ambient.g, ambient.b);
+		m_MaterialDiffuse = Vector3(diffuse.r, diffuse.g, diffuse.b);
+		m_MaterialSpecular = Vector3(specular.r, specular.g, specular.b);
 
 		for (UI32 k = 0; k < mesh->mNumFaces; k++)
 		{
@@ -51,7 +59,8 @@ Mesh::Mesh(IDevice& device, char* path)
 		for (UI32 k = 0; k < mesh->mNumVertices; k++)
 		{
 			aiVector3D vertex = mesh->mVertices[k];
-			vertices.push_back({ Vector3(vertex.x, vertex.y, vertex.z), Vector3(0, 0, 0) });
+			aiVector3D normal = mesh->mNormals[k];
+			vertices.push_back({ Vector3(vertex.x, vertex.y, vertex.z), Vector3(normal.x, normal.y, normal.z) });
 		}
 	}
 

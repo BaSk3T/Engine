@@ -10,7 +10,7 @@ ConstantBuffer::ConstantBuffer(IDevice& device, UI32 bufferSize, void* data)
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bufferDesc.ByteWidth = bufferSize;
-	bufferDesc.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	bufferDesc.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA initData;

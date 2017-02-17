@@ -4,13 +4,13 @@
 struct VS_INPUT
 {
 	float3 position : POSITION;
-	float3 color	: COLOR;
+	float3 normal   : NORMAL;
 };
 
 struct PS_OUTPUT
 {
 	float4 position : SV_POSITION;
-	float4 color    : COLOR;
+	float4 normal	: TEXCOORD0;
 };
 
 cbuffer MatrixConstantBuffer : register(b0)
@@ -27,7 +27,7 @@ PS_OUTPUT main(VS_INPUT input)
 	pos = mul(worldViewProjection, pos);
 
 	output.position = pos;
-	output.color = float4(input.color, 1);
+	output.normal = float4(input.normal, 1);
 
 	return output;
 }
