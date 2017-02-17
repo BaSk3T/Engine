@@ -32,7 +32,9 @@ private:
 	Shader<VertexShader>* m_VertexShader;
 	Shader<PixelShader>* m_PixelShader;
 
-	IBuffer* m_ConstantBuffer;
+	IBuffer* m_ConstantBufferMatrices;
+	IBuffer* m_ConstantBufferMaterials;
+	IBuffer* m_ConstantBufferScene;
 	InputLayout* m_InputLayout;
 
 	Mesh* m_Mesh;

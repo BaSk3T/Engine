@@ -23,8 +23,6 @@ DirectX::XMMATRIX Camera::GetViewMatrix()
 	DirectX::XMVECTOR newForward = cameraTarget;
 	cameraTarget = DirectX::XMVector3Normalize(cameraTarget);
 
-	m_ViewDirection = cameraTarget;
-
 	DirectX::XMVECTOR newRight = DirectX::XMVector3Transform(m_CameraDefaultRight, cameraRotation);
 	DirectX::XMVECTOR newUp = DirectX::XMVector3Transform(m_CameraDefaultUp, cameraRotation);
 

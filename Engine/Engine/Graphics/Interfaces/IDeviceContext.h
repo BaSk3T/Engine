@@ -28,8 +28,8 @@ public:
 	virtual void SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE type) = 0;
 	virtual void SetVertexBuffer(IBuffer& vertexBuffer, UI32 vertexSize) = 0;
 	virtual void SetIndexBuffer(IBuffer& indexBuffer) = 0;
-	virtual void VSSetConstantBuffer(IBuffer& constantBuffer) = 0;
-	virtual void PSSetConstantBuffer(IBuffer& constantBuffer) = 0;
+	virtual void VSSetConstantBuffer(IBuffer& constantBuffer, UI32 slot) = 0;
+	virtual void PSSetConstantBuffer(IBuffer& constantBuffer, UI32 slot) = 0;
 	virtual void SetVertexShader(IShader& shader) = 0;
 	virtual void SetPixelShader(IShader& shader) = 0;
 

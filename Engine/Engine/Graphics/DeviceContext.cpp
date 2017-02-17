@@ -72,18 +72,18 @@ void DeviceContext::SetIndexBuffer(IBuffer& indexBuffer)
 	m_DeviceContext->IASetIndexBuffer(buffer, ConvertResourceDataFormat(dataFormat), 0);
 }
 
-void DeviceContext::VSSetConstantBuffer(IBuffer& constantBuffer)
+void DeviceContext::VSSetConstantBuffer(IBuffer& constantBuffer, UI32 slot)
 {
 	ID3D11Buffer* buffer = static_cast<ConstantBuffer&>(constantBuffer).GetPointer();
 
-	m_DeviceContext->VSSetConstantBuffers(0, 1, &buffer);
+	m_DeviceContext->VSSetConstantBuffers(slot, 1, &buffer);
 }
 
-void DeviceContext::PSSetConstantBuffer(IBuffer& constantBuffer)
+void DeviceContext::PSSetConstantBuffer(IBuffer& constantBuffer, UI32 slot)
 {
 	ID3D11Buffer* buffer = static_cast<ConstantBuffer&>(constantBuffer).GetPointer();
 
-	m_DeviceContext->PSSetConstantBuffers(0, 1, &buffer);
+	m_DeviceContext->PSSetConstantBuffers(slot, 1, &buffer);
 }
 
 void DeviceContext::SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TYPE type)

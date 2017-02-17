@@ -12,14 +12,14 @@ public:
 	~Camera();
 
 	DirectX::XMMATRIX GetViewMatrix();
-	__m128 GetViewDirection() const { return m_ViewDirection; };
+	__m128 GetPosition() const { return m_Position; };
+
 	void HandleInput(float leftStickX, float leftStickY, float rightStickX, float rightStickY);
 
 private:
 	void SetDefaultDirections();
 
 	__m128 m_Position;
-	__m128 m_ViewDirection;
 
 	float m_PositionXChange;
 	float m_PositionZChange;

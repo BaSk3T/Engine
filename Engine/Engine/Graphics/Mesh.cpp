@@ -14,8 +14,8 @@
 // later should be moved in another file
 struct Vertex
 {
-	Vector3 m_Position;
-	Vector3 m_Color;
+	Vector4 m_Position;
+	Vector4 m_Normal;
 };
 
 Mesh::Mesh(IDevice& device, char* path)
@@ -41,9 +41,9 @@ Mesh::Mesh(IDevice& device, char* path)
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
 		mat->Get(AI_MATKEY_COLOR_SPECULAR, specular);
 
-		m_MaterialAmbient = Vector3(ambient.r, ambient.g, ambient.b);
-		m_MaterialDiffuse = Vector3(diffuse.r, diffuse.g, diffuse.b);
-		m_MaterialSpecular = Vector3(specular.r, specular.g, specular.b);
+		m_MaterialAmbient = Vector4(ambient.r, ambient.g, ambient.b, 1);
+		m_MaterialDiffuse = Vector4(diffuse.r, diffuse.g, diffuse.b, 1);
+		m_MaterialSpecular = Vector4(specular.r, specular.g, specular.b, 1);
 
 		for (UI32 k = 0; k < mesh->mNumFaces; k++)
 		{
@@ -60,7 +60,7 @@ Mesh::Mesh(IDevice& device, char* path)
 		{
 			aiVector3D vertex = mesh->mVertices[k];
 			aiVector3D normal = mesh->mNormals[k];
-			vertices.push_back({ Vector3(vertex.x, vertex.y, vertex.z), Vector3(normal.x, normal.y, normal.z) });
+			vertices.push_back({ Vector4(vertex.x, vertex.y, vertex.z, 1), Vector4(normal.x, normal.y, normal.z, 0) });
 		}
 	}
 
