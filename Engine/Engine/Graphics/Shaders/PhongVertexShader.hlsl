@@ -3,15 +3,17 @@
 
 struct VS_INPUT
 {
-	float4 position : POSITION;
-	float4 normal   : NORMAL;
+	float4 position		: POSITION;
+	float4 normal		: NORMAL;
+	float2 textureCoord : TEXCOORD0;
 };
 
 struct PS_OUTPUT
 {
-	float4 position : SV_POSITION;
-	float4 normal	: TEXCOORD0;
-	float4 viewDir	: TEXCOORD1;
+	float4 position		: SV_POSITION;
+	float4 normal		: TEXCOORD0;
+	float2 textureCoord	: TEXCOORD1;
+	float4 viewDir		: TEXCOORD2;
 };
 
 cbuffer MatrixConstantBuffer : register(b0)
@@ -41,6 +43,7 @@ PS_OUTPUT main(VS_INPUT input)
 	output.position = pos;
 	output.normal = normal;
 	output.viewDir = cameraPosition - positionInWorld;
+	output.textureCoord = input.textureCoord;
 
 	return output;
 }

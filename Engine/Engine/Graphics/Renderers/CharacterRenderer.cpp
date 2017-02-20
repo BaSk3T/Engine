@@ -9,6 +9,8 @@
 #include "../Formats.h"
 #include "../Camera.h"
 #include "../Mesh.h"
+#include "../Texture.h"
+#include "../Sampler.h"
 
 struct ConstantBufferMatrices
 {
@@ -43,8 +45,9 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 	m_PixelShader = new Shader<PixelShader>(*m_Device, L"Graphics/Shaders/PhongPixelShader.hlsl", "main", "ps_5_0");
 
 	std::vector<InputElement> vec;
-	vec.push_back({ "POSITION"	, 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 0 });
-	vec.push_back({ "NORMAL"	, 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 16 });
+	vec.push_back({ "POSITION", 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 0 });
+	vec.push_back({ "NORMAL"  , 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 16 });
+	vec.push_back({ "TEXCOORD", 0, RESOURCE_DATA_FORMAT_R32G32_FLOAT,		0, 32 });
 
 	ConstantBufferMaterials cbMaterials;
 	cbMaterials.m_MaterialAmbient = m_Mesh->m_MaterialAmbient;
@@ -57,11 +60,15 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 	m_ConstantBufferScene = new ConstantBuffer(*m_Device, sizeof(ConstantBufferScene), nullptr);
 
 	m_DeviceContext->SetViewPort(m_Width, m_Height, 0.0f, 1.0f, 0, 0);
+
+	m_Sampler = new Sampler(*m_Device);
+	m_DeviceContext->PSSetSampler(*m_Sampler, 0);
 }
 CharacterRenderer::~CharacterRenderer()
 {
 	_aligned_free(m_Camera);
 
+	delete m_Sampler;
 	delete m_Mesh;
 	delete m_InputLayout;
 	delete m_ConstantBufferMatrices;

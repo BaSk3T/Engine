@@ -16,6 +16,8 @@ struct Vertex
 {
 	Vector4 m_Position;
 	Vector4 m_Normal;
+	float m_TexCoordX;
+	float m_TexCoordY;
 };
 
 Mesh::Mesh(IDevice& device, char* path)
@@ -23,7 +25,8 @@ Mesh::Mesh(IDevice& device, char* path)
 	Assimp::Importer importer;
 	const aiScene* modelLoaded = importer.ReadFile(path, aiProcess_Triangulate	|
 												aiProcess_JoinIdenticalVertices |
-												aiProcess_GenNormals);
+												aiProcess_GenNormals			|
+												aiProcess_FlipUVs);
 
 	std::vector<UI32> indices;
 	std::vector<Vertex> vertices;
@@ -33,6 +36,8 @@ Mesh::Mesh(IDevice& device, char* path)
 		aiMesh* mesh = modelLoaded->mMeshes[i];
 		
 		aiMaterial* mat = modelLoaded->mMaterials[mesh->mMaterialIndex];
+
+		bool hasTextureCoords = mesh->HasTextureCoords(0);
 
 		aiColor3D ambient(0.f, 0.f, 0.f);
 		aiColor3D diffuse(0.f, 0.f, 0.f);
@@ -60,7 +65,14 @@ Mesh::Mesh(IDevice& device, char* path)
 		{
 			aiVector3D vertex = mesh->mVertices[k];
 			aiVector3D normal = mesh->mNormals[k];
-			vertices.push_back({ Vector4(vertex.x, vertex.y, vertex.z, 1), Vector4(normal.x, normal.y, normal.z, 0) });
+			aiVector3D texCoords = aiVector3D(0, 0, 0);
+
+			if (hasTextureCoords)
+			{
+				texCoords = mesh->mTextureCoords[0][k];
+			}
+
+			vertices.push_back({ Vector4(vertex.x, vertex.y, vertex.z, 1), Vector4(normal.x, normal.y, normal.z, 0), texCoords.x, texCoords.y });
 		}
 	}
 

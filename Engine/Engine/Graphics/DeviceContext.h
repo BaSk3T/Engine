@@ -26,6 +26,8 @@ public:
 	virtual void PSSetConstantBuffer(IBuffer& constantBuffer, UI32 slot);
 	virtual void SetVertexShader(IShader& shader);
 	virtual void SetPixelShader(IShader& shader);
+	virtual void PSSetTexture(ITexture& texture, UI32 slot);
+	virtual void PSSetSampler(ISampler& sampler, UI32 slot);
 
 	virtual void ClearRenderTarget(IRenderTarget& renderTarget, ColorRGBA color);
 	virtual void ClearDepthStencilBuffer();

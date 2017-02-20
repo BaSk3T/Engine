@@ -5,6 +5,8 @@ class IRenderTarget;
 class IInputLayout;
 class IBuffer;
 class IShader;
+class ITexture;
+class ISampler;
 
 #include "../../Types.h"
 #include "../Formats.h"
@@ -32,6 +34,8 @@ public:
 	virtual void PSSetConstantBuffer(IBuffer& constantBuffer, UI32 slot) = 0;
 	virtual void SetVertexShader(IShader& shader) = 0;
 	virtual void SetPixelShader(IShader& shader) = 0;
+	virtual void PSSetTexture(ITexture& texture, UI32 slot) = 0;
+	virtual void PSSetSampler(ISampler& sampler, UI32 slot) = 0;
 
 	virtual void ClearRenderTarget(IRenderTarget& renderTarget, ColorRGBA color) = 0;
 	virtual void ClearDepthStencilBuffer() = 0;

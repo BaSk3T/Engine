@@ -11,6 +11,8 @@
 #include "ConstantBuffer.h"
 #include "FormatConverter.h"
 #include "Shader.h"
+#include "Texture.h"
+#include "Sampler.h"
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext)
 	: m_DeviceContext(deviceContext)
@@ -126,6 +128,20 @@ void DeviceContext::SetPixelShader(IShader& shader)
 	Shader<PixelShader>& pixelShader = static_cast<Shader<PixelShader>&>(shader);
 
 	m_DeviceContext->PSSetShader(pixelShader.GetShader().m_Pointer, NULL, 0);
+}
+
+void DeviceContext::PSSetTexture(ITexture& texture, UI32 slot)
+{
+	ID3D11ShaderResourceView* resource = static_cast<Texture&>(texture).GetResourcePointer();
+
+	m_DeviceContext->PSSetShaderResources(slot, 1, &resource);
+}
+
+void DeviceContext::PSSetSampler(ISampler& sampler, UI32 slot)
+{
+	ID3D11SamplerState* sampl = static_cast<Sampler&>(sampler).GetPointer();
+
+	m_DeviceContext->PSSetSamplers(slot, 1, &sampl);
 }
 
 void DeviceContext::CreateDepthStencilBuffer(ID3D11Device* device, ID3D11Texture2D* depthStencilTexture)

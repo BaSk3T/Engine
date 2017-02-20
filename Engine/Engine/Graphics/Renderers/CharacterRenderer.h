@@ -7,6 +7,7 @@ class IBuffer;
 class InputLayout;
 class Camera;
 class Mesh;
+class ISampler;
 
 #include "../../Types.h"
 #include "../Renderer.h"
@@ -38,6 +39,7 @@ private:
 	InputLayout* m_InputLayout;
 
 	Mesh* m_Mesh;
+	ISampler* m_Sampler;
 };
 
 #endif // !CHARACTERRENDERER_H
