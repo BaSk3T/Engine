@@ -31,14 +31,13 @@ struct ConstantBufferScene
 	Vector4 m_CameraPosition;
 };
 
-CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
+CharacterRenderer::CharacterRenderer(IDevice* device, Camera* camera, UI32 width, UI32 height)
 	: m_DeviceContext(device->GetImmediateContext()),
 	m_Device(device),
+	m_Camera(camera),
 	m_Width(width),
 	m_Height(height)
 {
-	m_Camera = new(_aligned_malloc(sizeof(Camera), 16)) Camera(0, 0, 15.0f);
-
 	m_Mesh = new Mesh(*m_Device, "Models/dragon.obj");
 
 	m_VertexShader = new Shader<VertexShader>(*m_Device, L"Graphics/Shaders/PhongVertexShader.hlsl", "main", "vs_5_0");
@@ -66,8 +65,6 @@ CharacterRenderer::CharacterRenderer(IDevice* device, UI32 width, UI32 height)
 }
 CharacterRenderer::~CharacterRenderer()
 {
-	_aligned_free(m_Camera);
-
 	delete m_Sampler;
 	delete m_Mesh;
 	delete m_InputLayout;

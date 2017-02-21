@@ -22,6 +22,7 @@ System::~System()
 
 	delete m_Device;
 	delete m_GamepadHandler;
+	_aligned_free(m_Camera);
 
 	for (auto renderer : m_Renderers)
 	{
@@ -33,7 +34,10 @@ UI32 System::Run()
 {
 	MSG msg = { 0 };
 
+	m_Device = new Device(m_hWnd, m_WindowWidth, m_WindowHeight);
 	m_GamepadHandler = new WindowsGamepadHandler();
+	m_Camera = new(_aligned_malloc(sizeof(Camera), 16)) Camera(0, 0, 15.0f);
+	m_Renderers.push_back(new CharacterRenderer(m_Device, m_Camera, m_WindowWidth, m_WindowHeight));
 
 	while (msg.message != WM_QUIT)
 	{
@@ -46,13 +50,11 @@ UI32 System::Run()
 		m_GamepadHandler->HandleInput();
 		Gamepad& gamepad = m_GamepadHandler->GetGamepad();
 
+		m_Camera->HandleInput(gamepad.m_LeftStickMagnitudeX, gamepad.m_LeftStickMagnitudeY, gamepad.m_RightStickMagnitudeX, gamepad.m_RightStickMagnitudeY);
+		m_Camera->CalculateViewMatrix();
+
 		for (auto renderer : m_Renderers)
 		{
-			static_cast<CharacterRenderer*>(renderer)->m_Camera->HandleInput(gamepad.m_LeftStickMagnitudeX,
-				gamepad.m_LeftStickMagnitudeY,
-				gamepad.m_RightStickMagnitudeX,
-				gamepad.m_RightStickMagnitudeY);
-
 			renderer->RenderFrame();
 		}
 	}
@@ -86,12 +88,6 @@ void System::InitializeWindow(UI32 width, UI32 height, HINSTANCE hInstance, int 
 	}
 
 	ShowWindow(m_hWnd, nCmdShow);
-
-	// create device
-	m_Device = new Device(m_hWnd, width, height);
-
-	// add renderers
-	m_Renderers.push_back(new CharacterRenderer(m_Device, width, height));
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

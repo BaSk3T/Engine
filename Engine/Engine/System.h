@@ -1,6 +1,7 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+class Camera;
 class Renderer;
 class IDevice;
 class IGamepadHandler;
@@ -28,7 +29,7 @@ private:
 	IDevice* m_Device;
 	std::vector<Renderer*> m_Renderers;
 	IGamepadHandler* m_GamepadHandler;
-
+	Camera* m_Camera;
 };
 
 static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

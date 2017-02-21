@@ -16,12 +16,10 @@ class ISampler;
 class CharacterRenderer : public Renderer
 {
 public:
-	CharacterRenderer(IDevice* device, UI32 width, UI32 height);
+	CharacterRenderer(IDevice* device, Camera* camera, UI32 width, UI32 height);
 	~CharacterRenderer();
 
 	virtual void RenderFrame();
-
-	Camera* m_Camera;
 
 private:
 	UI32 m_Width;
@@ -40,6 +38,7 @@ private:
 
 	Mesh* m_Mesh;
 	ISampler* m_Sampler;
+	Camera* m_Camera;
 };
 
 #endif // !CHARACTERRENDERER_H

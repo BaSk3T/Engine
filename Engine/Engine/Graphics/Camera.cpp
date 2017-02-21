@@ -1,7 +1,5 @@
 #include "Camera.h"
 
-// camera should be singleton?
-
 Camera::Camera(float x, float y, float z) :
 	m_Pitch(0),
 	m_Yaw(0),
@@ -16,7 +14,7 @@ Camera::~Camera()
 {
 }
 
-DirectX::XMMATRIX Camera::GetViewMatrix()
+void Camera::CalculateViewMatrix()
 {
 	DirectX::XMMATRIX cameraRotation = DirectX::XMMatrixRotationRollPitchYaw(m_Pitch, m_Yaw, 0);
 	DirectX::XMVECTOR cameraTarget = DirectX::XMVector3Transform(m_CameraDefaultForward, cameraRotation);
@@ -30,9 +28,7 @@ DirectX::XMMATRIX Camera::GetViewMatrix()
 	m_Position = DirectX::XMVectorAdd(m_Position, DirectX::XMVectorScale(newForward, m_PositionZChange));
 
 	DirectX::XMVECTOR newTarget = DirectX::XMVectorSubtract(m_Position, cameraTarget);
-	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtRH(m_Position, newTarget, newUp);
-
-	return viewMatrix;
+	m_ViewMatrix = DirectX::XMMatrixLookAtRH(m_Position, newTarget, newUp);
 }
 
 void Camera::HandleInput(float leftStickX, float leftStickY, float rightStickX, float rightStickY)

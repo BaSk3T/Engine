@@ -11,7 +11,8 @@ public:
 	Camera(float x, float y, float z);
 	~Camera();
 
-	DirectX::XMMATRIX GetViewMatrix();
+	void CalculateViewMatrix();
+	DirectX::XMMATRIX GetViewMatrix() const { return m_ViewMatrix; };
 	__m128 GetPosition() const { return m_Position; };
 
 	void HandleInput(float leftStickX, float leftStickY, float rightStickX, float rightStickY);
@@ -20,6 +21,7 @@ private:
 	void SetDefaultDirections();
 
 	__m128 m_Position;
+	DirectX::XMMATRIX m_ViewMatrix;
 
 	float m_PositionXChange;
 	float m_PositionZChange;
