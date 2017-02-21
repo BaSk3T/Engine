@@ -11,6 +11,7 @@ Buffer::Buffer()
 
 Buffer::~Buffer()
 {
+	m_Buffer->Release();
 }
 
 void* Buffer::Map(IDeviceContext* deviceContext, MAP_TYPE map)

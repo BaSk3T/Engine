@@ -167,6 +167,7 @@
     <ClCompile Include="TestingTask.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlignedAllocationPolicy.h" />
     <ClInclude Include="DebugHelper.h" />
     <ClInclude Include="Graphics\Buffer.h" />
     <ClInclude Include="Graphics\Camera.h" />

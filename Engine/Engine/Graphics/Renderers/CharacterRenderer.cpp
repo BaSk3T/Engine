@@ -1,7 +1,5 @@
 #include "CharacterRenderer.h"
 
-#include <DirectXMath.h>
-
 #include "../Device.h"
 #include "../DeviceContext.h"
 #include "../InputLayout.h"
@@ -36,24 +34,25 @@ CharacterRenderer::CharacterRenderer(IDevice* device, Camera* camera, UI32 width
 	m_Device(device),
 	m_Camera(camera),
 	m_Width(width),
-	m_Height(height)
+	m_Height(height),
+	m_World(DirectX::XMMatrixTranslation(0, 0, 0))
 {
 	m_Mesh = new Mesh(*m_Device, "Models/dragon.obj");
 
 	m_VertexShader = new Shader<VertexShader>(*m_Device, L"Graphics/Shaders/PhongVertexShader.hlsl", "main", "vs_5_0");
 	m_PixelShader = new Shader<PixelShader>(*m_Device, L"Graphics/Shaders/PhongPixelShader.hlsl", "main", "ps_5_0");
 
-	std::vector<InputElement> vec;
-	vec.push_back({ "POSITION", 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 0 });
-	vec.push_back({ "NORMAL"  , 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 16 });
-	vec.push_back({ "TEXCOORD", 0, RESOURCE_DATA_FORMAT_R32G32_FLOAT,		0, 32 });
+	std::vector<InputElement> inputElements;
+	inputElements.push_back({ "POSITION", 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 0 });
+	inputElements.push_back({ "NORMAL"  , 0, RESOURCE_DATA_FORMAT_R32G32B32A32_FLOAT, 0, 16 });
+	inputElements.push_back({ "TEXCOORD", 0, RESOURCE_DATA_FORMAT_R32G32_FLOAT,		0, 32 });
 
 	ConstantBufferMaterials cbMaterials;
 	cbMaterials.m_MaterialAmbient = m_Mesh->m_MaterialAmbient;
 	cbMaterials.m_MaterialDiffuse = m_Mesh->m_MaterialDiffuse;
 	cbMaterials.m_MaterialSpecular = m_Mesh->m_MaterialSpecular;
 
-	m_InputLayout = new InputLayout(*m_Device, *m_VertexShader, vec);
+	m_InputLayout = new InputLayout(*m_Device, *m_VertexShader, inputElements);
 	m_ConstantBufferMatrices = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMatrices), nullptr);
 	m_ConstantBufferMaterials = new ConstantBuffer(*m_Device, sizeof(ConstantBufferMaterials), &cbMaterials);
 	m_ConstantBufferScene = new ConstantBuffer(*m_Device, sizeof(ConstantBufferScene), nullptr);
@@ -82,14 +81,13 @@ void CharacterRenderer::RenderFrame()
 
 	float aspectRatio = float(m_Width) / m_Height;
 
-	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(0, 0, 0);
 	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(45), aspectRatio, 1.0f, 100.0f);
 
 	float* cameraPosition = m_Camera->GetPosition().m128_f32;
 
 	ConstantBufferMatrices cbMatrices;
-	cbMatrices.m_WorldViewProjection = world * m_Camera->GetViewMatrix() * projection;
-	cbMatrices.m_World = world;
+	cbMatrices.m_WorldViewProjection = m_World * m_Camera->GetViewMatrix() * projection;
+	cbMatrices.m_World = m_World;
 
 	ConstantBufferScene cbScene;
 	cbScene.m_LightDirection = Vector4(0, 0, 1, 0);
@@ -123,4 +121,11 @@ void CharacterRenderer::RenderFrame()
 	
 	m_DeviceContext->DrawIndexed(m_Mesh->GetNumberOfIndices(), 0, 0);
 	m_Device->Present();
+}
+
+void CharacterRenderer::Translate(float x, float y, float z, float w)
+{
+	DirectX::XMVECTOR vec = { x, y, z, w };
+	DirectX::XMMATRIX translated = DirectX::XMMatrixTranslationFromVector(vec);
+	m_World *= translated;
 }

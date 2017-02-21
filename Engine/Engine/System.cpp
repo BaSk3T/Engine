@@ -22,7 +22,7 @@ System::~System()
 
 	delete m_Device;
 	delete m_GamepadHandler;
-	_aligned_free(m_Camera);
+	delete m_Camera;
 
 	for (auto renderer : m_Renderers)
 	{
@@ -36,7 +36,7 @@ UI32 System::Run()
 
 	m_Device = new Device(m_hWnd, m_WindowWidth, m_WindowHeight);
 	m_GamepadHandler = new WindowsGamepadHandler();
-	m_Camera = new(_aligned_malloc(sizeof(Camera), 16)) Camera(0, 0, 15.0f);
+	m_Camera = new Camera(0, 0, 15.0f);
 	m_Renderers.push_back(new CharacterRenderer(m_Device, m_Camera, m_WindowWidth, m_WindowHeight));
 
 	while (msg.message != WM_QUIT)

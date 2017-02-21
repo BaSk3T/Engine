@@ -31,5 +31,4 @@ ConstantBuffer::ConstantBuffer(IDevice& device, UI32 bufferSize, void* data)
 
 ConstantBuffer::~ConstantBuffer()
 {
-	m_Buffer->Release();
 }

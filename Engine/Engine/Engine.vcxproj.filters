@@ -233,6 +233,9 @@
     <ClInclude Include="Graphics\Sampler.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="AlignedAllocationPolicy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="LockFreeDataStructures\LockFreeStack.inl">

@@ -5,7 +5,9 @@
 
 #include <DirectXMath.h>
 
-class Camera
+#include "../AlignedAllocationPolicy.h"
+
+class Camera : public AlignedAllocationPoilicy<16>
 {
 public:
 	Camera(float x, float y, float z);

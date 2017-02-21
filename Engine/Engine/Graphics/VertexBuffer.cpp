@@ -33,5 +33,4 @@ VertexBuffer::VertexBuffer(IDevice& device, UI32 vertexCount, UI32 vertexSize, v
 
 VertexBuffer::~VertexBuffer()
 {
-	m_Buffer->Release();
 }

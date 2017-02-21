@@ -43,5 +43,4 @@ IndexBuffer::IndexBuffer(IDevice& device, UI32 indicesCount, RESOURCE_DATA_FORMA
 
 IndexBuffer::~IndexBuffer()
 {
-	m_Buffer->Release();
 }

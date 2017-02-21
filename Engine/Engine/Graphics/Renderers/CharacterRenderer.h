@@ -9,17 +9,21 @@ class Camera;
 class Mesh;
 class ISampler;
 
+#include <DirectXMath.h>
+
 #include "../../Types.h"
 #include "../Renderer.h"
 #include "../Shader.h"
+#include "../../AlignedAllocationPolicy.h"
 
-class CharacterRenderer : public Renderer
+class CharacterRenderer : public Renderer, public AlignedAllocationPoilicy<16>
 {
 public:
 	CharacterRenderer(IDevice* device, Camera* camera, UI32 width, UI32 height);
 	~CharacterRenderer();
 
 	virtual void RenderFrame();
+	virtual void Translate (float x, float y, float z, float w);
 
 private:
 	UI32 m_Width;
@@ -39,6 +43,8 @@ private:
 	Mesh* m_Mesh;
 	ISampler* m_Sampler;
 	Camera* m_Camera;
+
+	DirectX::XMMATRIX m_World;
 };
 
 #endif // !CHARACTERRENDERER_H
