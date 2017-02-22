@@ -39,6 +39,11 @@ CharacterRenderer::CharacterRenderer(IDevice* device, Camera* camera, UI32 width
 }
 CharacterRenderer::~CharacterRenderer()
 {
+	if (m_Texture != nullptr)
+	{
+		delete m_Texture;
+	}
+
 	delete m_Sampler;
 	delete m_Mesh;
 	delete m_InputLayout;

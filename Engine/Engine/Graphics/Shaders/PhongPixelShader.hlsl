@@ -50,7 +50,5 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 diffuse = materialDiffuse * nDotL * lightDiffuse;
 	float4 specular = materialSpecular * pow(rDotV, 30) * lightSpecular;
 
-	//float3 color = tex2D.Sample(MeshTextureSampler, input.textureCoord).rgb;
-	
 	return ambient + diffuse + specular;
 }

@@ -26,6 +26,7 @@ void Camera::CalculateViewMatrix()
 
 	m_Position = DirectX::XMVectorAdd(m_Position, DirectX::XMVectorScale(newRight, m_PositionXChange));
 	m_Position = DirectX::XMVectorAdd(m_Position, DirectX::XMVectorScale(newForward, m_PositionZChange));
+	m_Position.m128_f32[3] = 1;
 
 	DirectX::XMVECTOR newTarget = DirectX::XMVectorSubtract(m_Position, cameraTarget);
 	m_ViewMatrix = DirectX::XMMatrixLookAtRH(m_Position, newTarget, newUp);
