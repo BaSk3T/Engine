@@ -8,6 +8,7 @@ class InputLayout;
 class Camera;
 class Mesh;
 class ISampler;
+class ITexture;
 
 #include <DirectXMath.h>
 
@@ -24,6 +25,12 @@ public:
 
 	virtual void RenderFrame();
 	virtual void Translate (float x, float y, float z, float w);
+
+	void SetVertexShader(std::string& name);
+	void SetPixelShader(std::string& name);
+	void SetTexture(std::string& name);
+	void SetModel(std::string& name);
+	void SetInputLayout();
 
 private:
 	UI32 m_Width;
@@ -43,6 +50,7 @@ private:
 	Mesh* m_Mesh;
 	ISampler* m_Sampler;
 	Camera* m_Camera;
+	ITexture* m_Texture;
 
 	DirectX::XMMATRIX m_World;
 };

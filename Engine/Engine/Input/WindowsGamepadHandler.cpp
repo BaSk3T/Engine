@@ -43,57 +43,29 @@ void WindowsGamepadHandler::HandleInput()
 
 void WindowsGamepadHandler::HandleRightStick(XINPUT_STATE& state)
 {
-	float RX = state.Gamepad.sThumbRX;
-	float RY = state.Gamepad.sThumbRY;
+	float x = state.Gamepad.sThumbRX;
+	float y = state.Gamepad.sThumbRY;
 
-	//determine how far the controller is pushed
-	float magnitude = sqrt(RX*RX + RY*RY);
-
-	//determine the direction the controller is pushed
-	float normalizedLX = RX / magnitude;
-	float normalizedLY = RY / magnitude;
-
-	float normalizedMagnitude = 0;
-
-	//check if the controller is outside a circular dead zone
-	if (magnitude > INPUT_DEADZONE)
-	{
-		//clip the magnitude at its expected maximum value
-		if (magnitude > 32767) magnitude = 32767;
-
-		//adjust magnitude relative to the end of the dead zone
-		magnitude -= INPUT_DEADZONE;
-
-		//optionally normalize the magnitude with respect to its expected range
-		//giving a magnitude value of 0.0 to 1.0
-		normalizedMagnitude = magnitude / (32767 - INPUT_DEADZONE);
-
-		m_Gamepad.m_RightStickMagnitudeX = normalizedLX;
-		m_Gamepad.m_RightStickMagnitudeY = normalizedLY;
-	}
-	else //if the controller is in the deadzone zero out the magnitude
-	{
-		magnitude = 0.0;
-		normalizedMagnitude = 0.0;
-
-		m_Gamepad.m_RightStickMagnitudeX = 0.0f;
-		m_Gamepad.m_RightStickMagnitudeY = 0.0f;
-	}
-
-	m_Gamepad.m_RightStickMagnitude = normalizedMagnitude;
+	CalculateStickMagnitude(x, y, m_Gamepad.m_RightStickMagnitudeX, m_Gamepad.m_RightStickMagnitudeY, m_Gamepad.m_RightStickMagnitude);
 }
 
 void WindowsGamepadHandler::HandleLeftStick(XINPUT_STATE& state)
 {
-	float LX = state.Gamepad.sThumbLX;
-	float LY = state.Gamepad.sThumbLY;
+	float x = state.Gamepad.sThumbLX;
+	float y = state.Gamepad.sThumbLY;
 
+	CalculateStickMagnitude(x, y, m_Gamepad.m_LeftStickMagnitudeX, m_Gamepad.m_LeftStickMagnitudeY, m_Gamepad.m_LeftStickMagnitude);
+}
+
+
+void WindowsGamepadHandler::CalculateStickMagnitude(float x, float y, float& xMagnitude, float& yMagnitude, float& stickMagnitude)
+{
 	//determine how far the controller is pushed
-	float magnitude = sqrt(LX*LX + LY*LY);
+	float magnitude = sqrt(x*x + y*y);
 
 	//determine the direction the controller is pushed
-	float normalizedLX = LX / magnitude;
-	float normalizedLY = LY / magnitude;
+	float normalizedX = x / magnitude;
+	float normalizedY = y / magnitude;
 
 	float normalizedMagnitude = 0;
 
@@ -110,17 +82,17 @@ void WindowsGamepadHandler::HandleLeftStick(XINPUT_STATE& state)
 		//giving a magnitude value of 0.0 to 1.0
 		normalizedMagnitude = magnitude / (32767 - INPUT_DEADZONE);
 
-		m_Gamepad.m_LeftStickMagnitudeX = normalizedLX;
-		m_Gamepad.m_LeftStickMagnitudeY = normalizedLY;
+		xMagnitude = normalizedX;
+		yMagnitude = normalizedY;
 	}
 	else //if the controller is in the deadzone zero out the magnitude
 	{
 		magnitude = 0.0;
 		normalizedMagnitude = 0.0;
 
-		m_Gamepad.m_LeftStickMagnitudeX = 0.0f;
-		m_Gamepad.m_LeftStickMagnitudeY = 0.0f;
+		xMagnitude = 0;
+		yMagnitude = 0;
 	}
 
-	m_Gamepad.m_LeftStickMagnitude = normalizedMagnitude;
+	stickMagnitude = normalizedMagnitude;
 }

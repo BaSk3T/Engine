@@ -1,0 +1,7 @@
+<Actor name="Dragon">
+    <WorldPosition x="0" y="0" z="0"/>
+    <VertexShader name="PhongVertexShader"/>
+    <PixelShader name="PhongPixelShader"/>
+    <Model name="dragon.obj"/>
+    <Texture name=""/>
+</Actor>

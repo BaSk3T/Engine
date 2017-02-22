@@ -21,6 +21,8 @@ public:
 	void InitializeWindow(UI32 width, UI32 height, HINSTANCE hInstance, int nCmdShow);
 
 private:
+	void LoadActors();
+
 	HWND m_hWnd;
 
 	UI32 m_WindowWidth;

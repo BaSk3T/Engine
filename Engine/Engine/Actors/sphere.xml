@@ -1,0 +1,7 @@
+<Actor name="Sphere">
+    <WorldPosition x="-5" y="5" z="5"/>
+    <VertexShader name="PhongVertexShader"/>
+    <PixelShader name="PhongPixelShaderTex"/>
+    <Model name="sphere.obj"/>
+    <Texture name="earthtexture.dds"/>
+</Actor>

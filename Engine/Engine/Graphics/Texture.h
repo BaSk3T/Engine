@@ -18,14 +18,14 @@ namespace DirectX
 class Texture : public ITexture
 {
 public:
-	Texture(IDevice& device, wchar_t* path);
+	Texture(IDevice& device, char* path);
 	~Texture();
 
 	ID3D11Texture2D* GetTexturePointer() const { return m_Texture; };
 	ID3D11ShaderResourceView* GetResourcePointer() const { return m_ResourceView; };
 
 private:
-	void LoadTexture(wchar_t* path, DirectX::ScratchImage& image, DirectX::TexMetadata& metaData);
+	void LoadTexture(char* path, DirectX::ScratchImage& image, DirectX::TexMetadata& metaData);
 	void CreateTexture(ID3D11Device* device, DirectX::ScratchImage& image, DirectX::TexMetadata& metaData);
 
 	ID3D11Texture2D* m_Texture;

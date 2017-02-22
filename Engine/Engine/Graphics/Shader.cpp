@@ -8,12 +8,17 @@
 #include "../DebugHelper.h"
 
 template <class ShaderType>
-Shader<ShaderType>::Shader(IDevice& device, wchar_t* path, char* entryPoint, char* shaderTarget)
+Shader<ShaderType>::Shader(IDevice& device, char* path, char* entryPoint, char* shaderTarget)
 {
 	ID3D11Device* dev = static_cast<Device&>(device).GetDevice();
 
+	size_t newsize = strlen(path) + 1;
+	size_t convertedChars = 0;
+	wchar_t* wcstring = new wchar_t[newsize];
+	mbstowcs_s(&convertedChars, wcstring, newsize, path, _TRUNCATE);
+
 	HRESULT hr = D3DCompileFromFile(
-		path,
+		wcstring,
 		NULL,
 		NULL,/*set to D3D_COMPILE_STANDARD_FILE_INCLUDE if there are going to be #includes in shader*/
 		entryPoint,
@@ -23,9 +28,11 @@ Shader<ShaderType>::Shader(IDevice& device, wchar_t* path, char* entryPoint, cha
 		&m_Blob,
 		NULL);
 
+	free(wcstring);
+
 	if (FAILED(hr))
 	{
-		OUTPUT_DEBUG("Failed to compile vertex shader!\n");
+		OUTPUT_DEBUG("Failed to compile shader!\n");
 	}
 
 	CreateShader(device);

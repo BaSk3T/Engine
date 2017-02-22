@@ -17,6 +17,7 @@ public:
 private:
 	void HandleLeftStick(XINPUT_STATE& state);
 	void HandleRightStick(XINPUT_STATE& state);
+	void CalculateStickMagnitude(float x, float y, float& xMagnitude, float& yMagnitude, float& stickMagnitude);
 };
 
 #endif // !WINDOWSGAMEPADHANDLER_H

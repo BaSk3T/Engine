@@ -24,7 +24,7 @@ template <class ShaderType>
 class Shader : public IShader
 {
 public:
-	Shader(IDevice& device, wchar_t* path, char* entryPoint, char* shaderTarget);
+	Shader(IDevice& device, char* path, char* entryPoint, char* shaderTarget);
 	~Shader();
 
 	ID3DBlob* GetBlob() const { return m_Blob; };

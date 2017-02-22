@@ -5,7 +5,7 @@
 #include "Device.h"
 #include "../DebugHelper.h"
 
-Texture::Texture(IDevice& device, wchar_t* path)
+Texture::Texture(IDevice& device, char* path)
 {
 	Device& dev = static_cast<Device&>(device);
 	DirectX::ScratchImage image;
@@ -19,9 +19,16 @@ Texture::~Texture()
 {
 }
 
-void Texture::LoadTexture(wchar_t* path, DirectX::ScratchImage& image, DirectX::TexMetadata& metaData)
+void Texture::LoadTexture(char* path, DirectX::ScratchImage& image, DirectX::TexMetadata& metaData)
 {
-	HRESULT hr = DirectX::LoadFromDDSFile(path, DirectX::DDS_FLAGS_NONE, &metaData, image);
+	size_t newsize = strlen(path) + 1;
+	size_t convertedChars = 0;
+	wchar_t* wcstring = new wchar_t[newsize];
+	mbstowcs_s(&convertedChars, wcstring, newsize, path, _TRUNCATE);
+
+	HRESULT hr = DirectX::LoadFromDDSFile(wcstring, DirectX::DDS_FLAGS_NONE, &metaData, image);
+
+	free(wcstring);
 
 	if (FAILED(hr))
 	{

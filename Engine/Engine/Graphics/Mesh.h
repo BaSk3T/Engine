@@ -4,7 +4,7 @@
 class IDevice;
 class IDeviceContext;
 class IndexBuffer;
-class VertexBuffer;
+class IBuffer;
 
 #include "../Types.h"
 
@@ -17,6 +17,13 @@ struct Vector4
 	float x, y, z, w;
 };
 
+struct ConstantBufferMaterials
+{
+	Vector4 m_MaterialAmbient;
+	Vector4 m_MaterialDiffuse;
+	Vector4 m_MaterialSpecular;
+};
+
 class Mesh
 {
 public:
@@ -24,6 +31,7 @@ public:
 	~Mesh();
 
 	void SetBuffers(IDeviceContext& deviceContext);
+	void SetMaterialsBuffer(IDeviceContext& deviceContext, UI32 slot);
 	UI32 GetNumberOfIndices() const { return m_NumberOfIndices; };
 
 	Vector4 m_MaterialAmbient;
@@ -31,8 +39,9 @@ public:
 	Vector4 m_MaterialSpecular;
 
 private:
-	IndexBuffer* m_IndexBuffer;
-	VertexBuffer* m_VertexBuffer;
+	IBuffer* m_IndexBuffer;
+	IBuffer* m_VertexBuffer;
+	IBuffer* m_ConstantBufferMaterials;
 
 	UI32 m_NumberOfIndices;
 };

@@ -8,6 +8,7 @@
 
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "ConstantBuffer.h"
 #include "Device.h"
 #include "DeviceContext.h"
 
@@ -78,18 +79,30 @@ Mesh::Mesh(IDevice& device, char* path)
 
 	m_NumberOfIndices = indices.size();
 
+	ConstantBufferMaterials cbMaterials;
+	cbMaterials.m_MaterialAmbient = m_MaterialAmbient;
+	cbMaterials.m_MaterialDiffuse = m_MaterialDiffuse;
+	cbMaterials.m_MaterialSpecular = m_MaterialSpecular;
+
 	m_IndexBuffer = new IndexBuffer(device, indices.size(), RESOURCE_DATA_FORMAT_R32_UINT, &indices[0]);
 	m_VertexBuffer = new VertexBuffer(device, vertices.size(), sizeof(Vertex), &vertices[0]);
+	m_ConstantBufferMaterials = new ConstantBuffer(device, sizeof(ConstantBufferMaterials), &cbMaterials);
 }
 
 Mesh::~Mesh()
 {
 	delete m_IndexBuffer;
 	delete m_VertexBuffer;
+	delete m_ConstantBufferMaterials;
 }
 
 void Mesh::SetBuffers(IDeviceContext& deviceContext)
 {
 	deviceContext.SetVertexBuffer(*m_VertexBuffer, sizeof(Vertex));
 	deviceContext.SetIndexBuffer(*m_IndexBuffer);
+}
+
+void Mesh::SetMaterialsBuffer(IDeviceContext& deviceContext, UI32 slot)
+{
+	deviceContext.PSSetConstantBuffer(*m_ConstantBufferMaterials, slot);
 }
